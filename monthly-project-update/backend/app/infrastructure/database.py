@@ -3,7 +3,8 @@ from __future__ import annotations
 from datetime import UTC, date, datetime
 from uuid import UUID
 
-from sqlalchemy import BigInteger, CheckConstraint, Date, DateTime, ForeignKey, Index, String, Text, UniqueConstraint, create_engine, select
+from sqlalchemy import BigInteger, CheckConstraint, DateTime, ForeignKey, Index, String, Unicode, UniqueConstraint, Uuid, create_engine, select
+from sqlalchemy.dialects import mssql
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, relationship, sessionmaker
 
@@ -18,7 +19,7 @@ class ProjectUpdateModel(Base):
     __tablename__ = "project_updates"
     __table_args__ = (
         CheckConstraint("delivery_status IN ('PENDING','SENT','FAILED')", name="ck_project_updates_status"),
-        CheckConstraint("EXTRACT(DAY FROM reporting_month) = 1", name="ck_project_updates_month_first_day"),
+        CheckConstraint("DAY(reporting_month) = 1", name="ck_project_updates_month_first_day"),
         CheckConstraint(
             "(delivery_status = 'PENDING' AND smtp_message_id IS NULL AND failure_code IS NULL AND failure_detail IS NULL AND sent_at IS NULL) OR "
             "(delivery_status = 'SENT' AND smtp_message_id IS NOT NULL AND failure_code IS NULL AND failure_detail IS NULL AND sent_at IS NOT NULL) OR "
@@ -29,17 +30,17 @@ class ProjectUpdateModel(Base):
         Index("ix_project_updates_employee_month", "employee_email", "reporting_month"),
         Index("ix_project_updates_created_at", "created_at"),
     )
-    id: Mapped[UUID] = mapped_column(primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     idempotency_key: Mapped[str] = mapped_column(String(128), nullable=False)
     request_hash: Mapped[str] = mapped_column(String(64), nullable=False)
-    employee_name: Mapped[str] = mapped_column(String(200), nullable=False)
+    employee_name: Mapped[str] = mapped_column(Unicode(200), nullable=False)
     employee_email: Mapped[str] = mapped_column(String(320), nullable=False)
-    reporting_month: Mapped[date] = mapped_column(Date, nullable=False)
-    team_project: Mapped[str] = mapped_column(String(300), nullable=False)
-    achievements: Mapped[str] = mapped_column(Text, nullable=False)
-    initiatives: Mapped[str] = mapped_column(Text, nullable=False)
-    next_weeks_plan: Mapped[str] = mapped_column(Text, nullable=False)
-    delivery_status: Mapped[str] = mapped_column(String(16), nullable=False)
+    reporting_month: Mapped[date] = mapped_column(mssql.DATE, nullable=False)
+    team_project: Mapped[str] = mapped_column(Unicode(300), nullable=False)
+    achievements: Mapped[str] = mapped_column(mssql.NVARCHAR(None), nullable=False)
+    initiatives: Mapped[str] = mapped_column(mssql.NVARCHAR(None), nullable=False)
+    next_weeks_plan: Mapped[str] = mapped_column(mssql.NVARCHAR(None), nullable=False)
+    delivery_status: Mapped[str] = mapped_column(String(16), nullable=False, server_default="PENDING")
     smtp_message_id: Mapped[str | None] = mapped_column(String(255))
     failure_code: Mapped[str | None] = mapped_column(String(64))
     failure_detail: Mapped[str | None] = mapped_column(String(1000))
@@ -56,11 +57,11 @@ class AttachmentModel(Base):
         CheckConstraint("size_bytes > 0 AND size_bytes <= 10485760", name="ck_attachments_size"),
         UniqueConstraint("project_update_id", "kind", name="uq_attachments_update_kind"),
     )
-    id: Mapped[UUID] = mapped_column(primary_key=True)
-    project_update_id: Mapped[UUID] = mapped_column(ForeignKey("project_updates.id", ondelete="CASCADE"), index=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    project_update_id: Mapped[UUID] = mapped_column(Uuid, ForeignKey("project_updates.id", ondelete="CASCADE"), index=True)
     kind: Mapped[str] = mapped_column(String(24), nullable=False)
-    original_filename: Mapped[str] = mapped_column(String(255), nullable=False)
-    stored_relative_path: Mapped[str] = mapped_column(String(500), nullable=False)
+    original_filename: Mapped[str] = mapped_column(Unicode(255), nullable=False)
+    stored_relative_path: Mapped[str] = mapped_column(Unicode(500), nullable=False)
     media_type: Mapped[str] = mapped_column(String(127), nullable=False)
     size_bytes: Mapped[int] = mapped_column(BigInteger, nullable=False)
     sha256: Mapped[str] = mapped_column(String(64), nullable=False)

@@ -10,7 +10,10 @@ from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    database_url: str = "postgresql+psycopg://project_update:project_update@localhost:5432/project_update"
+    database_url: str = (
+        "mssql+pyodbc://sa:ProjectUpdate1!@localhost:1433/ProjectUpdateDB"
+        "?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    )
     storage_root: Path = Path("./var/storage")
     max_file_bytes: int = 10 * 1024 * 1024
     max_total_bytes: int = 20 * 1024 * 1024
