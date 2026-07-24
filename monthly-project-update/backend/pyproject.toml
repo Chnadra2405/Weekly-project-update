@@ -1,0 +1,44 @@
+[project]
+name = "monthly-project-update"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "alembic==1.16.4",
+  "fastapi==0.116.1",
+  "pillow==11.3.0",
+  "psycopg[binary]==3.2.13",
+  "pydantic-settings==2.10.1",
+  "python-multipart==0.0.20",
+  "sqlalchemy==2.0.41",
+  "uvicorn[standard]==0.35.0",
+]
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = ["alembic*", "tests*"]
+
+[project.optional-dependencies]
+dev = [
+  "httpx==0.28.1",
+  "mypy==1.17.0",
+  "pytest==8.4.1",
+  "pytest-cov==6.2.1",
+  "ruff==0.12.4",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]

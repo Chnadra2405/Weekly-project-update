@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: project_update
+      POSTGRES_USER: project_update
+      POSTGRES_PASSWORD: project_update
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U project_update -d project_update"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - project-update-postgres:/var/lib/postgresql/data
+
+volumes:
+  project-update-postgres:
