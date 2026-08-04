@@ -1,1 +1,1 @@
-"""Monthly project update backend."""
+"""Weekly project update backend."""

@@ -1,29 +1,13 @@
 from __future__ import annotations
 
-from pathlib import Path
-from typing import cast
+from datetime import date
 from uuid import UUID
 
-from app.application.contracts import IncomingFile, StagedUpload, SubmitCommand
+import pytest
+
+from app.application.contracts import IdempotencyConflictError, SubmitCommand
 from app.application.services import SubmitProjectUpdate, SystemClock
 from app.domain import ProjectUpdate
-
-
-class FakeStorage:
-    def stage(self, submission_id: UUID, files: list[IncomingFile]) -> list[StagedUpload]:
-        return []
-
-    def commit(self, submission_id: UUID, staged: list[StagedUpload]) -> None:
-        return None
-
-    def discard(self, submission_id: UUID) -> None:
-        return None
-
-    def absolute_path(self, attachment: object) -> Path:
-        raise AssertionError("No attachment expected")
-
-    def is_ready(self) -> bool:
-        return True
 
 
 class FakeUnitOfWork:
@@ -39,46 +23,30 @@ class FakeUnitOfWork:
     def get(self, update_id: UUID) -> ProjectUpdate | None:
         return self.update if self.update and self.update.id == update_id else None
 
-    def save_status(self, update: ProjectUpdate) -> None:
-        self.update = update
-
-
-class FakeMailSender:
-    def __init__(self, error: Exception | None = None) -> None:
-        self.calls = 0
-        self.error = error
-
-    def send(self, update: ProjectUpdate) -> str:
-        self.calls += 1
-        if self.error:
-            raise self.error
-        return f"<{update.id}@example.com>"
-
 
 def command() -> SubmitCommand:
-    return SubmitCommand("key-1", "Ada", "ada@example.com", "2026-07", "Platform", "Done", "Next", "Plan")
+    return SubmitCommand("key-1", date(2026, 7, 20), date(2026, 7, 26), "Platform", "Done", "Next", "Plan")
 
 
-def test_matching_replay_does_not_send_twice() -> None:
+def test_matching_replay_returns_the_stored_record() -> None:
     unit_of_work = FakeUnitOfWork()
-    sender = FakeMailSender()
-    service = SubmitProjectUpdate(unit_of_work, FakeStorage(), sender, SystemClock())
+    service = SubmitProjectUpdate(unit_of_work, SystemClock())
 
     first = service.execute(command())
     replay = service.execute(command())
 
-    assert first.update.delivery_status.value == "SENT"
     assert replay.replayed is True
-    assert sender.calls == 1
+    assert replay.update.id == first.update.id
+    assert replay.update.created_at == first.update.created_at
 
 
-def test_mail_failure_is_persisted_without_secret_detail() -> None:
+def test_changed_replay_raises_conflict() -> None:
     unit_of_work = FakeUnitOfWork()
-    sender = FakeMailSender(RuntimeError("password=secret"))
-    service = SubmitProjectUpdate(unit_of_work, FakeStorage(), sender, SystemClock())
+    service = SubmitProjectUpdate(unit_of_work, SystemClock())
+    service.execute(command())
+    changed = SubmitCommand(
+        "key-1", date(2026, 7, 20), date(2026, 7, 26), "Platform", "Changed", "Next", "Plan"
+    )
 
-    result = service.execute(command())
-
-    assert result.update.delivery_status.value == "FAILED"
-    assert result.update.failure_code == "SMTP_DELIVERY_FAILED"
-    assert "secret" not in cast(str, result.update.failure_detail)
+    with pytest.raises(IdempotencyConflictError, match="different content"):
+        service.execute(changed)

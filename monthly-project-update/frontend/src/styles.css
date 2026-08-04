@@ -15,10 +15,10 @@ body { margin: 0; min-width: 320px; min-height: 100vh; background-color: #f4f4f2
 button, input, textarea { font: inherit; }
 button, label[for] { -webkit-tap-highlight-color: transparent; }
 .ssg-header { min-height: 68px; padding: 12px clamp(20px, 4vw, 56px); color: white; background: var(--purple-dark); border-top: 5px solid var(--orange); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.ssg-header > div, .ssg-month-label { display: flex; align-items: center; gap: 12px; }
+.ssg-header > div, .ssg-period-label { display: flex; align-items: center; gap: 12px; }
 .ssg-header h1 { margin: 0; font-size: 1.25rem; letter-spacing: 0; }
 .ssg-product-mark { width: 38px; height: 38px; display: grid; place-items: center; background: white; color: var(--purple); font-weight: 600; border-radius: 4px; }
-.ssg-month-label { font-size: 0.95rem; color: #ededed; }
+.ssg-period-label { font-size: 0.95rem; color: #ededed; }
 .ssg-main { width: min(1180px, calc(100% - 40px)); margin: 0 auto 48px; }
 .ssg-intro { padding: 34px 0 24px; display: grid; grid-template-columns: 1fr minmax(280px, 460px); align-items: end; gap: 32px; border-bottom: 1px solid var(--line); }
 .ssg-intro h2 { margin: 3px 0 0; font-size: 2rem; line-height: 1.15; letter-spacing: 0; }
@@ -34,24 +34,12 @@ button, label[for] { -webkit-tap-highlight-color: transparent; }
 .ssg-field { position: relative; margin-bottom: 18px; }
 .ssg-field label, .ssg-label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
 .ssg-field label span { color: var(--red); }
-.ssg-field input, .ssg-field textarea { width: 100%; border: 1px solid #bdbdb8; border-radius: 6px; padding: 10px 12px; color: #1d1d1b; background: white; box-shadow: 0 1px 1px rgba(0,0,0,.04); }
+.ssg-field input, .ssg-field select, .ssg-field textarea { width: 100%; border: 1px solid #bdbdb8; border-radius: 6px; padding: 10px 12px; color: #1d1d1b; background: white; box-shadow: 0 1px 1px rgba(0,0,0,.04); }
 .ssg-field textarea { resize: vertical; min-height: 112px; }
-.ssg-field input:focus-visible, .ssg-field textarea:focus-visible, .ssg-button:focus-visible, .ssg-icon-button:focus-visible, .ssg-replace:focus-visible { outline: 3px solid rgba(77, 29, 130, .42); outline-offset: 2px; border-color: var(--purple); }
+.ssg-field input:focus-visible, .ssg-field select:focus-visible, .ssg-field textarea:focus-visible, .ssg-button:focus-visible { outline: 3px solid rgba(77, 29, 130, .42); outline-offset: 2px; border-color: var(--purple); }
 [aria-invalid="true"] { border-color: var(--red) !important; }
 .ssg-count { display: block; text-align: right; color: var(--muted); font-size: 0.75rem; }
 .ssg-error { display: block; margin-top: 4px; color: #a60021; font-size: 0.82rem; }
-.ssg-helper { display: block; margin-top: 4px; color: var(--muted); }
-.ssg-optional { color: var(--muted); font-weight: 400; }
-.ssg-attachments { border-top: 1px solid var(--line); padding: 28px 0; }
-.ssg-dropzone { min-height: 122px; border: 2px dashed #aaa9a4; border-radius: 6px; background: rgba(255,255,255,.65); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--purple); }
-.ssg-file-field:focus-within .ssg-dropzone, .ssg-file-field:focus-within .ssg-selected-file { outline: 3px solid rgba(77, 29, 130, .42); outline-offset: 2px; border-color: var(--purple); }
-.ssg-dropzone span { color: var(--muted); font-size: .85rem; }
-.ssg-selected-file { min-height: 76px; display: grid; grid-template-columns: auto minmax(0,1fr) auto auto; gap: 10px; align-items: center; padding: 12px; border: 1px solid var(--line); background: white; border-radius: 6px; }
-.ssg-selected-file span { overflow: hidden; }
-.ssg-selected-file strong, .ssg-selected-file small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ssg-selected-file small { color: var(--muted); }
-.ssg-replace { color: var(--purple); text-decoration: underline; cursor: pointer; }
-.ssg-icon-button { width: 36px; height: 36px; border: 0; background: transparent; color: var(--red); cursor: pointer; display: grid; place-items: center; border-radius: 4px; }
 .ssg-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .ssg-form-actions { padding: 20px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 20px; }
 .ssg-form-actions p { color: var(--muted); margin: 0; }
@@ -63,13 +51,12 @@ button, label[for] { -webkit-tap-highlight-color: transparent; }
 .ssg-summary, .ssg-result { margin-top: 22px; padding: 16px 18px; display: flex; gap: 12px; border-left: 4px solid var(--red); background: white; box-shadow: 0 4px 20px rgba(30,20,30,.06); }
 .ssg-summary p { margin: 4px 0 0; }
 .ssg-result { margin-top: 30px; padding: 24px; border-left-color: var(--orange); }
-.ssg-result--sent { border-left-color: #2f7d32; }
-.ssg-result--failed { border-left-color: var(--red); }
+.ssg-result--saved { border-left-color: #2f7d32; }
 .ssg-result h2 { margin: 0 0 4px; font-size: 1.3rem; }
 .ssg-result p { margin: 3px 0 16px; }
 .ssg-result dl { display: grid; gap: 8px; }
 .ssg-result dl div { display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 12px; }
 .ssg-result dt { color: var(--muted); }
 .ssg-result dd { margin: 0; overflow-wrap: anywhere; }
-@media (max-width: 780px) { .ssg-month-label { display: none; } .ssg-main { width: min(100% - 28px, 600px); } .ssg-intro, .ssg-form-grid, .ssg-two-columns { grid-template-columns: 1fr; } .ssg-intro { gap: 12px; } .ssg-form-grid { gap: 14px; } .ssg-form-actions { align-items: stretch; flex-direction: column; } .ssg-form-actions > div, .ssg-button { width: 100%; } .ssg-result dl div { grid-template-columns: 1fr; gap: 0; } }
+@media (max-width: 780px) { .ssg-period-label { display: none; } .ssg-main { width: min(100% - 28px, 600px); } .ssg-intro, .ssg-form-grid, .ssg-two-columns { grid-template-columns: 1fr; } .ssg-intro { gap: 12px; } .ssg-form-grid { gap: 14px; } .ssg-form-actions { align-items: stretch; flex-direction: column; } .ssg-form-actions > div, .ssg-button { width: 100%; } .ssg-result dl div { grid-template-columns: 1fr; gap: 0; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }

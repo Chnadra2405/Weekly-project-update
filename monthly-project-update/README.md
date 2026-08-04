@@ -1,6 +1,6 @@
-# Monthly Project Update
+# Weekly Project Update
 
-Standalone MVP for collecting one employee's monthly update for one team or project, storing the submission and optional reference files, and delivering an escaped multipart email through configurable SMTP.
+Standalone application for collecting and storing one weekly update for one team or project. Each record covers exactly seven inclusive days.
 
 ## Requirements
 
@@ -11,7 +11,7 @@ Standalone MVP for collecting one employee's monthly update for one team or proj
 
 ## Local setup
 
-1. Copy `.env.example` to `.env` and set SMTP recipients and credentials.
+1. Copy `.env.example` to `.env` and adjust the database or CORS settings when needed.
 2. Start SQL Server and create `ProjectUpdateDB` with `docker compose up -d`.
 3. In `backend`, create a virtual environment and install `pip install -e ".[dev]"`.
 4. Apply the schema with `python -m alembic upgrade head`.
@@ -29,31 +29,25 @@ mssql+pyodbc://localhost/ProjectUpdateDB?driver=ODBC+Driver+18+for+SQL+Server&tr
 Inspect saved updates in SQL Server Management Studio or Azure Data Studio:
 
 ```sql
-SELECT id, employee_name, employee_email, reporting_month, team_project,
-	   delivery_status, sent_at, created_at
+SELECT id, start_of_week, end_of_week, team_project,
+	   achievements, initiatives, next_weeks_plan, created_at
 FROM dbo.project_updates
 ORDER BY created_at DESC;
 ```
 
-## Delivery and storage behavior
+## Submission behavior
 
-Each fresh form owns one UUID idempotency key. Replaying the same key and exact payload returns the stored result and does not invoke SMTP. Reusing a key with changed content returns HTTP 409. Delivery failures are persisted as `FAILED` and are never retried automatically. `PENDING` means the durable submission requires operational reconciliation.
+Each fresh form owns one UUID idempotency key. Replaying the same key and exact payload returns the original stored record with HTTP 200 and the `Idempotent-Replayed` response header. Reusing a key with changed content returns HTTP 409. A new record returns HTTP 201.
 
-A replay received while the original request is still `PENDING` returns HTTP 202. Terminal replays return HTTP 200. Clients must not treat a `PENDING` response as confirmed delivery.
+`end_of_week` must equal `start_of_week + 6 days`. The application enforces this rule in the frontend, domain model, and SQL Server check constraint. The result page displays the persisted identifier, reporting dates, narrative fields, and timestamps returned by the API.
 
-Validated files are held under `STORAGE_ROOT/.staging`, then atomically moved to `STORAGE_ROOT/submissions/<submission-id>`. Database records contain relative paths only. Back up SQL Server and the complete storage root together and grant the API process read/write access only to that root. Stale staging directories may be inspected operationally; v1 does not delete them automatically.
-
-Allowed uploads are one `.eml` or `.msg` reference email and one PNG, JPEG, or WebP image, each up to 10 MiB and 20 MiB total. Images are decoded and checked for matching type. MSG files require an OLE compound-file signature. EML files require parseable message headers.
-
-SMTP recipients come from comma-separated `SMTP_TO`, `SMTP_CC`, and `SMTP_BCC`. BCC recipients are passed only in the SMTP envelope. User content is HTML-escaped, a plain-text alternative is included, and attachments retain only a sanitized display filename.
-
-SMTP cannot provide a transaction spanning the remote mail server and SQL Server. A process crash after SMTP accepts a message but before `SENT` is recorded can leave `PENDING`; blindly retrying could duplicate mail, so reconciliation is intentionally manual.
+Migration `0002` first maps each legacy `reporting_month` to a seven-day interval beginning on that date. It then permanently drops employee identity, reporting month, attachment, SMTP, and delivery-status data. The migration is intentionally irreversible because the removed data cannot be reconstructed.
 
 ## Deployment security
 
 This MVP does not include application-level authentication. Deploy the API and frontend only behind the organization's authenticated access gateway, restrict network access to employees, and rate-limit `POST /api/v1/project-updates`. Do not expose the API directly to the public internet.
 
-Configure the reverse proxy or ingress with a request-body limit of 20 MiB. FastAPI parses multipart bodies before application upload validation runs, so the proxy limit is required to reject oversized requests early. Keep the backend per-file and aggregate checks enabled as defense in depth.
+Configure the reverse proxy or ingress with an appropriate request-body limit and preserve the `Idempotency-Key` request header.
 
 ## Validation
 

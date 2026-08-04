@@ -1,10 +1,10 @@
-from datetime import UTC, datetime
+from datetime import date, timedelta
 from uuid import uuid4
 
 import pytest
 
-from app.domain import Attachment, AttachmentKind, DeliveryStatus, EmailAddress, ProjectUpdate, ReportingMonth
-from app.domain.exceptions import DomainValidationError, InvalidStatusTransitionError
+from app.domain import ProjectUpdate
+from app.domain.exceptions import DomainValidationError
 
 
 def make_update(**overrides: object) -> ProjectUpdate:
@@ -12,9 +12,8 @@ def make_update(**overrides: object) -> ProjectUpdate:
         "id": uuid4(),
         "idempotency_key": "request-1",
         "request_hash": "a" * 64,
-        "employee_name": "  Ada Lovelace  ",
-        "employee_email": EmailAddress(" ADA@EXAMPLE.COM "),
-        "reporting_month": ReportingMonth.from_html_month("2026-07"),
+        "start_of_week": date(2026, 7, 20),
+        "end_of_week": date(2026, 7, 26),
         "team_project": " Platform ",
         "achievements": "Shipped reporting",
         "initiatives": "Improve observability",
@@ -24,35 +23,15 @@ def make_update(**overrides: object) -> ProjectUpdate:
     return ProjectUpdate(**values)  # type: ignore[arg-type]
 
 
-def test_normalizes_email_month_and_required_text() -> None:
+def test_normalizes_required_text() -> None:
     update = make_update()
 
-    assert str(update.employee_email) == "ada@example.com"
-    assert str(update.reporting_month) == "2026-07"
-    assert update.employee_name == "Ada Lovelace"
+    assert update.team_project == "Platform"
 
 
-def test_rejects_duplicate_attachment_kind() -> None:
-    attachment = Attachment(uuid4(), AttachmentKind.IMAGE, "chart.png", "a/chart.png", "image/png", 4, "b" * 64)
+@pytest.mark.parametrize("duration_days", [5, 7])
+def test_requires_exactly_seven_inclusive_days(duration_days: int) -> None:
+    start_of_week = date(2026, 7, 20)
 
-    with pytest.raises(DomainValidationError, match="one attachment"):
-        make_update(attachments=[attachment, attachment])
-
-
-def test_terminal_status_cannot_transition_again() -> None:
-    update = make_update()
-    update.mark_sent("<id@example.com>", datetime.now(UTC))
-
-    assert update.delivery_status is DeliveryStatus.SENT
-    with pytest.raises(InvalidStatusTransitionError):
-        update.mark_failed("SMTP_FAILED", "not used")
-
-
-def test_failure_detail_is_bounded_and_single_line() -> None:
-    update = make_update()
-    update.mark_failed("SMTP_FAILED", "line one\n" + ("x" * 1100))
-
-    assert update.delivery_status is DeliveryStatus.FAILED
-    assert update.failure_detail is not None
-    assert "\n" not in update.failure_detail
-    assert len(update.failure_detail) == 1000
+    with pytest.raises(DomainValidationError, match="exactly seven inclusive days"):
+        make_update(end_of_week=start_of_week + timedelta(days=duration_days))

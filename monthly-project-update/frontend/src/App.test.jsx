@@ -6,10 +6,8 @@ import App from "./App";
 afterEach(() => vi.restoreAllMocks());
 
 async function completeForm(user) {
-  await user.type(screen.getByLabelText(/Employee name/), "Ada Lovelace");
-  await user.type(screen.getByLabelText(/Employee email/), "ada@example.com");
-  fireEvent.change(screen.getByLabelText(/Reporting month/), { target: { value: "2026-07" } });
-  await user.type(screen.getByLabelText(/Team \/ project/), "Platform");
+  fireEvent.change(screen.getByLabelText(/Start of week/), { target: { value: "2026-07-20" } });
+  await user.selectOptions(screen.getByLabelText(/Team \/ project/), "CustAppIS");
   await user.type(screen.getByLabelText(/Achievements/), "Delivered reporting");
   await user.type(screen.getByLabelText(/Initiatives/), "Improve telemetry");
   await user.type(screen.getByLabelText(/Next week's plan/), "Measure adoption");
@@ -19,22 +17,28 @@ describe("App", () => {
   it("links validation errors to required fields", async () => {
     render(<App />);
     await userEvent.click(screen.getByRole("button", { name: "Submit update" }));
-    const name = screen.getByLabelText(/Employee name/);
-    expect(name).toHaveAttribute("aria-invalid", "true");
-    expect(name).toHaveAccessibleDescription("This field is required.");
+    const start = screen.getByLabelText(/Start of week/);
+    expect(start).toHaveAttribute("aria-invalid", "true");
+    expect(start).toHaveAccessibleDescription("This field is required.");
     expect(screen.getByRole("alert")).toHaveTextContent("Review the highlighted fields");
   });
 
-  it("announces a sent result", async () => {
+  it("announces and displays the stored record", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
-      json: async () => ({ id: "update-1", reporting_month: "2026-07", team_project: "Platform", delivery_status: "SENT", smtp_message_id: "<id@example.com>", attachments: [] }),
+      json: async () => ({
+        id: "update-1", start_of_week: "2026-07-20", end_of_week: "2026-07-26", team_project: "CustAppIS",
+        achievements: "Delivered reporting", initiatives: "Improve telemetry", next_weeks_plan: "Measure adoption",
+        created_at: "2026-07-27T10:00:00Z", updated_at: "2026-07-27T10:00:00Z",
+      }),
     });
     const user = userEvent.setup();
     render(<App />);
     await completeForm(user);
     await user.click(screen.getByRole("button", { name: "Submit update" }));
-    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Update sent"));
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Update saved"));
+    expect(screen.getByRole("status")).toHaveTextContent("Delivered reporting");
+    expect(screen.getByRole("status")).toHaveTextContent("2026-07-27T10:00:00Z");
   });
 
   it("retains form values after an ambiguous transport failure", async () => {
@@ -44,6 +48,7 @@ describe("App", () => {
     await completeForm(user);
     await user.click(screen.getByRole("button", { name: "Submit update" }));
     await waitFor(() => expect(screen.getByRole("button", { name: "Retry request" })).toBeInTheDocument());
-    expect(screen.getByLabelText(/Employee name/)).toHaveValue("Ada Lovelace");
+    expect(screen.getByLabelText(/Start of week/)).toHaveValue("2026-07-20");
+    expect(screen.getByLabelText(/End of week/)).toHaveValue("2026-07-26");
   });
 });

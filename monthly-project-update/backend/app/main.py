@@ -6,9 +6,7 @@ from sqlalchemy import text
 
 from app.application.services import GetProjectUpdate, SubmitProjectUpdate, SystemClock
 from app.infrastructure.database import SqlAlchemyUnitOfWork, create_session_factory
-from app.infrastructure.mail import SmtpMailSender
 from app.infrastructure.settings import Settings
-from app.infrastructure.storage import LocalFileStorage
 from app.presentation.api import create_project_update_router
 
 
@@ -16,10 +14,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     config = settings or Settings()
     session_factory = create_session_factory(config.database_url)
     unit_of_work = SqlAlchemyUnitOfWork(session_factory)
-    storage = LocalFileStorage(config.storage_root, config.max_file_bytes, config.max_total_bytes, config.max_image_pixels)
-    submit = SubmitProjectUpdate(unit_of_work, storage, SmtpMailSender(config, storage), SystemClock())
+    submit = SubmitProjectUpdate(unit_of_work, SystemClock())
 
-    application = FastAPI(title="Monthly Project Update API", version="0.1.0")
+    application = FastAPI(title="Weekly Project Update API", version="0.2.0")
     application.add_middleware(
         CORSMiddleware,
         allow_origins=config.cors_allowed_origins,
@@ -38,8 +35,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         try:
             with session_factory() as session:
                 session.execute(text("SELECT 1"))
-            if not storage.is_ready():
-                raise OSError("Storage is not writable.")
         except Exception as error:
             raise HTTPException(503, "Service dependencies are not ready.") from error
         return {"status": "ready"}

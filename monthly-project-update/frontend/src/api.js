@@ -9,11 +9,9 @@ function errorMessage(detail) {
   return "The service could not process this update.";
 }
 
-export async function submitProjectUpdate(values, files, idempotencyKey) {
+export async function submitProjectUpdate(values, idempotencyKey) {
   const body = new FormData();
   Object.entries(values).forEach(([name, value]) => body.append(name, value));
-  if (files.reference_email) body.append("reference_email", files.reference_email);
-  if (files.image) body.append("image", files.image);
 
   const response = await fetch(`${API_BASE_URL}/project-updates`, {
     method: "POST",

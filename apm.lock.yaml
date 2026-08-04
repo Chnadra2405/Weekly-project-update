@@ -1,0 +1,907 @@
+lockfile_version: '1'
+generated_at: '2026-07-14T14:36:30.329001+00:00'
+apm_version: 0.25.0
+dependencies:
+- repo_url: soprasteria-is/ISSSG/AI_Toolkit_For_IS
+  name: development-generic
+  host: dev.azure.com
+  resolved_commit: 1379e1aedee1588d52c61bd92cf325b2ad42ca3a
+  resolved_ref: master
+  version: 1.0.0
+  virtual_path: development-generic
+  is_virtual: true
+  package_type: apm_package
+  deployed_files:
+  - .agents/skills/ai-feedback-tracker
+  - .agents/skills/ai-feedback-tracker/SKILL.md
+  - .agents/skills/ai-feedback-tracker/scripts/Add-FeedbackEntry.ps1
+  - .agents/skills/azure-devops
+  - .agents/skills/azure-devops/SKILL.md
+  - .agents/skills/azure-devops/references/azure-devops-pull-request.md
+  - .agents/skills/azure-devops/references/azure-devops-workitems.md
+  - .agents/skills/azure-devops/scripts/Add-PRReply.ps1
+  - .agents/skills/azure-devops/scripts/Add-PRThread.ps1
+  - .agents/skills/azure-devops/scripts/Add-WorkItemBranchLink.ps1
+  - .agents/skills/azure-devops/scripts/Add-WorkItemComment.ps1
+  - .agents/skills/azure-devops/scripts/Edit-WorkItem.ps1
+  - .agents/skills/azure-devops/scripts/Edit-WorkItemState.ps1
+  - .agents/skills/azure-devops/scripts/Get-PRChanges.ps1
+  - .agents/skills/azure-devops/scripts/Get-PRDetails.ps1
+  - .agents/skills/azure-devops/scripts/Get-PRList.ps1
+  - .agents/skills/azure-devops/scripts/Get-PRThreads.ps1
+  - .agents/skills/azure-devops/scripts/Get-WorkItem.ps1
+  - .agents/skills/azure-devops/scripts/New-PullRequest.ps1
+  - .agents/skills/azure-devops/scripts/New-WorkItem.ps1
+  - .agents/skills/azure-devops/scripts/Search-WorkItems.ps1
+  - .agents/skills/azure-devops/scripts/Set-PRThreadStatus.ps1
+  - .agents/skills/azure-devops/scripts/_AzdoCommon.ps1
+  - .agents/skills/caveman
+  - .agents/skills/caveman/SKILL.md
+  - .agents/skills/clean-architecture
+  - .agents/skills/clean-architecture/SKILL.md
+  - .agents/skills/clean-architecture/references/architecture-review.md
+  - .agents/skills/clean-architecture/references/ddd-patterns.md
+  - .agents/skills/data-modeling
+  - .agents/skills/data-modeling/SKILL.md
+  - .agents/skills/data-modeling/references/oracle-specifics.md
+  - .agents/skills/read-specs
+  - .agents/skills/read-specs/SKILL.md
+  - .agents/skills/reviewer-code-duplication
+  - .agents/skills/reviewer-code-duplication/SKILL.md
+  - .agents/skills/reviewer-conventions
+  - .agents/skills/reviewer-conventions/SKILL.md
+  - .agents/skills/reviewer-rgaa-accessibility
+  - .agents/skills/reviewer-rgaa-accessibility/SKILL.md
+  - .agents/skills/reviewer-security
+  - .agents/skills/reviewer-security/SKILL.md
+  - .agents/skills/reviewer-separation-of-concerns
+  - .agents/skills/reviewer-separation-of-concerns/SKILL.md
+  - .agents/skills/ui-ux-skill
+  - .agents/skills/ui-ux-skill/SKILL.md
+  - .agents/skills/ui-ux-skill/references/01-section-headers.md
+  - .agents/skills/ui-ux-skill/references/02-cards.md
+  - .agents/skills/ui-ux-skill/references/03-buttons-palette.md
+  - .agents/skills/ui-ux-skill/references/04-navigation-tabs.md
+  - .agents/skills/ui-ux-skill/references/05-data-tables.md
+  - .agents/skills/ui-ux-skill/references/06-badges.md
+  - .agents/skills/ui-ux-skill/references/07-form-inputs.md
+  - .agents/skills/ui-ux-skill/references/08-search-input.md
+  - .agents/skills/ui-ux-skill/references/09-toggle-switch.md
+  - .agents/skills/ui-ux-skill/references/10-file-dropzone.md
+  - .agents/skills/ui-ux-skill/references/11-alerts.md
+  - .agents/skills/ui-ux-skill/references/12-modal-and-drawer.md
+  - .agents/skills/ui-ux-skill/references/13-accordion.md
+  - .agents/skills/ui-ux-skill/references/14-kpi-cards.md
+  - .agents/skills/ui-ux-skill/references/15-progress-bars.md
+  - .github/agents/accessibility-statement-generator.agent.md
+  - .github/agents/feature-create-userstory.agent.md
+  - .github/agents/feature-implementer.agent.md
+  - .github/agents/pull-request-fixer.agent.md
+  - .github/agents/pull-request-reviewer.agent.md
+  - .github/agents/reviewer-code-duplication.agent.md
+  - .github/agents/reviewer-conventions.agent.md
+  - .github/agents/reviewer-global.agent.md
+  - .github/agents/reviewer-rgaa-accessibility.agent.md
+  - .github/agents/reviewer-security.agent.md
+  - .github/agents/reviewer-separation-of-concerns.agent.md
+  - .github/instructions/changelog.instructions.md
+  - .github/instructions/encoding.instructions.md
+  - .github/prompts/feature-create-userstory.prompt.md
+  - .github/prompts/feature-implement.prompt.md
+  - .github/prompts/features-from-prd.prompt.md
+  - .github/prompts/pull-request-fix.prompt.md
+  - .github/prompts/pull-request-review.prompt.md
+  - .github/prompts/review-code-duplication.prompt.md
+  - .github/prompts/review-global.prompt.md
+  - .github/prompts/review-rgaa-accessibility.prompt.md
+  deployed_file_hashes:
+    .agents/skills/ai-feedback-tracker/SKILL.md: sha256:09f007ee46dd1d9c83a1b2ca792c95637a57273465c1378ceef7cc622370316f
+    .agents/skills/ai-feedback-tracker/scripts/Add-FeedbackEntry.ps1: sha256:56c54b3da7019483a4e5ce0220d303a7cf76fdfc9884a8b7bda4e9434b0cd742
+    .agents/skills/azure-devops/SKILL.md: sha256:a61b2737a1aa6377ecf1b18df03b199c1f490892c0ab8a5f1c007972b223d82d
+    .agents/skills/azure-devops/references/azure-devops-pull-request.md: sha256:5d996900e223dda6b519742eafd9053a30e5ec60e5197b20e5e8125fea080cc0
+    .agents/skills/azure-devops/references/azure-devops-workitems.md: sha256:76e94ffac959a19d4fb60d75a81d28039c3e816b3d000f30e171882f6f2d2548
+    .agents/skills/azure-devops/scripts/Add-PRReply.ps1: sha256:86f2e9a0e850181f2dc1b0d243bff8ff40853969f5b5a8bec91f3e85d2e32c7d
+    .agents/skills/azure-devops/scripts/Add-PRThread.ps1: sha256:8b5e8379bd416561456540177b17cc530ab51aed2667ce8d999c3930b2079c8d
+    .agents/skills/azure-devops/scripts/Add-WorkItemBranchLink.ps1: sha256:5f38132ce3b3c5396762531229d8002e7e9640f3ac3ec00361c67ed1c7222c64
+    .agents/skills/azure-devops/scripts/Add-WorkItemComment.ps1: sha256:c1094e7c6201a28f9f5e28e9db57cffa492328d1c49e39851288610024c577d7
+    .agents/skills/azure-devops/scripts/Edit-WorkItem.ps1: sha256:24487279434fca2f52b5585506c5e1049e488810beeb1bf4a085fddee43effb0
+    .agents/skills/azure-devops/scripts/Edit-WorkItemState.ps1: sha256:d06147cf43f0aece98f691026a7ddcf567bff86e186ad629542ccd3f409da23f
+    .agents/skills/azure-devops/scripts/Get-PRChanges.ps1: sha256:6f7a76c47ee8129e1dca2d1d57900643527d76f37257b421c484d3e8b82130cc
+    .agents/skills/azure-devops/scripts/Get-PRDetails.ps1: sha256:345e2a4c11fc45f2830528280b201d78ad34a5d24b176124087a3351f930cc17
+    .agents/skills/azure-devops/scripts/Get-PRList.ps1: sha256:d5055235fcaa2971bfa63e0a27efe4c8478ee1f8701cc17073ec278d71616bb7
+    .agents/skills/azure-devops/scripts/Get-PRThreads.ps1: sha256:296bb44296b642eb1458dab2d595034b02cf7c18b3e3cecf0b460bc5fc92be8a
+    .agents/skills/azure-devops/scripts/Get-WorkItem.ps1: sha256:7cea8035b2104ce7d3849018ef1711940f83a5457fb3019ea0e5c79644b82ca8
+    .agents/skills/azure-devops/scripts/New-PullRequest.ps1: sha256:a2b07fe6ea338e2280e45fd0c287dfac8741e23c7cd0f4b727f80b4a6bd71556
+    .agents/skills/azure-devops/scripts/New-WorkItem.ps1: sha256:0562714a9e7cf94e8a69e395c2a2986dedfa3ec702f66839252bfb3f290869a7
+    .agents/skills/azure-devops/scripts/Search-WorkItems.ps1: sha256:0a93ec164f15efefa62a52a7d25115446b402ae54631c1b910bfe75ad2d08c18
+    .agents/skills/azure-devops/scripts/Set-PRThreadStatus.ps1: sha256:185ada7cd9eb0ce2ce468e58811a0ab3ca2bd2e8eb4564d15aebd40013640cc4
+    .agents/skills/azure-devops/scripts/_AzdoCommon.ps1: sha256:a6fbb16708ffbc3f2ff971c832b049c40678bf993ab4f36883c9a22ab62a6537
+    .agents/skills/caveman/SKILL.md: sha256:a1f02ff8e87f1f3842d6baf2bb17623875ff7f35b7d43a65595031de6acbaa57
+    .agents/skills/clean-architecture/SKILL.md: sha256:600d377a6bf661e9d479e443f1c1f8ade18cadb530a292eeb4f7b678cce68d70
+    .agents/skills/clean-architecture/references/architecture-review.md: sha256:383098da08ff6142f91ceeb637a730f1e22c71c1c858f6216c77fb489805f1b9
+    .agents/skills/clean-architecture/references/ddd-patterns.md: sha256:1d7b468187a8b8d2e0d2af2f5979dc929aa34327faf44cd7be781bb3bd49bfb0
+    .agents/skills/data-modeling/SKILL.md: sha256:8b1eacb0647edbe4f8ed3329ccbe00a4634b7f021d383c469a699fddca3534a2
+    .agents/skills/data-modeling/references/oracle-specifics.md: sha256:b1026ec3731595939b4b4a237fb6ef6a8a4ea31aae187d1f45ee09d4ddd80d8b
+    .agents/skills/read-specs/SKILL.md: sha256:3896f3aad164b21a8965303cadcb0330b3229fc258ecbc4ad04a6a0de17d3444
+    .agents/skills/reviewer-code-duplication/SKILL.md: sha256:b531169dfc7343f7449392c417edeeb2cf60a33088390a5c7f106f9fff12d66c
+    .agents/skills/reviewer-conventions/SKILL.md: sha256:41b2d926da149365b8380bd5b12abb5a68d5ede88e66b339b8152ee1a72e1add
+    .agents/skills/reviewer-rgaa-accessibility/SKILL.md: sha256:d8e8c2108e7f090031cb6233f00054cc8182733c4a8bd4027740b5dbf1093f71
+    .agents/skills/reviewer-security/SKILL.md: sha256:b54b198870d937987928ea37fb6d3bec6aa6899f6683fd8374a12ab508dd8d31
+    .agents/skills/reviewer-separation-of-concerns/SKILL.md: sha256:478318b450c03746b8435c438464594d64c47d1c5f3815e305e329b43e42020b
+    .agents/skills/ui-ux-skill/SKILL.md: sha256:c9155a041493475990f52386bf26dad2764e2a9e417f5cbfe04d2f835fa41081
+    .agents/skills/ui-ux-skill/references/01-section-headers.md: sha256:84e12d5f25a91b922f754035abeade34004fbbfcec7a86aa967b9c62b15fae04
+    .agents/skills/ui-ux-skill/references/02-cards.md: sha256:3e55b7743ee4c8d2667d8ba1bc7eb73557704d798b0e4da1b27c099f2aa0594d
+    .agents/skills/ui-ux-skill/references/03-buttons-palette.md: sha256:a614058523345ad6eb4bde502755b8b882dade50d8f59172d7631341c53521fe
+    .agents/skills/ui-ux-skill/references/04-navigation-tabs.md: sha256:9c451cea24b4b26be6557bea48d09e65f512a7890d99c41187352752cc76730b
+    .agents/skills/ui-ux-skill/references/05-data-tables.md: sha256:3d637a507d2daaa076351f98489af683c0ad7917a1af31974d72856863ef9af2
+    .agents/skills/ui-ux-skill/references/06-badges.md: sha256:97b95ce7d2cf59c8b161e3b175db752fa5235a67dfe621e74742577e0e33a97e
+    .agents/skills/ui-ux-skill/references/07-form-inputs.md: sha256:34efd8b311078d06025a40712f8e09b6b2ed2bf0d7672701aeb80eb3ecfe8655
+    .agents/skills/ui-ux-skill/references/08-search-input.md: sha256:7077e4de640ecbf39efdf04e6b5af53c73a74c407d25144e986e5eb54f39067d
+    .agents/skills/ui-ux-skill/references/09-toggle-switch.md: sha256:c273eb878e6e793b3e1d0ae211a0446f178a87d378220ccb7fa0c93cefff5aef
+    .agents/skills/ui-ux-skill/references/10-file-dropzone.md: sha256:b941ff379e2cf552f8a68285138f8a166e8f014d7e4cec4c0a784872e1cd9441
+    .agents/skills/ui-ux-skill/references/11-alerts.md: sha256:c3e8bcb1a6ade3ebde51942f139b2a9b18ebb36277dcf7bdbcfafb30a1f23a39
+    .agents/skills/ui-ux-skill/references/12-modal-and-drawer.md: sha256:3f175758178ce42ae364a7d88538170713b5bee0d40695b6b0433e24098bc30e
+    .agents/skills/ui-ux-skill/references/13-accordion.md: sha256:aed15d17c281a41772ad63e331ea654ae87ab57291c4973a732dd020f7a33443
+    .agents/skills/ui-ux-skill/references/14-kpi-cards.md: sha256:8f768ab5627054a3ffaf6752340839bbcf2eddba6ed07048313ee140fa7f2b32
+    .agents/skills/ui-ux-skill/references/15-progress-bars.md: sha256:7017ed0311f78a4d7b1b6248ceae236d9a1ad6e74f8d9d868f6811d8fcdc9c2d
+    .github/agents/accessibility-statement-generator.agent.md: sha256:b13ec4c30d02e086fe7f8313df913fa371b51cc3d9dbbf2469ef73f3c65fac6d
+    .github/agents/feature-create-userstory.agent.md: sha256:603b25a590936bea8560f4d3de3b6fd46e2a274297dc41f3caa1faf547296cc9
+    .github/agents/feature-implementer.agent.md: sha256:aa229b77c433f7846f03a04dcd569448837a16f741fd6d1f4dae1df4193e4007
+    .github/agents/pull-request-fixer.agent.md: sha256:76b0a0669397ebdc3b3950c3d7e383193320bedfc5ba21ebffebcd95c9b7064f
+    .github/agents/pull-request-reviewer.agent.md: sha256:8f3f274aee68f6eaf218336e3a5adaf874c208b73671c284d574e0e8af7c23fb
+    .github/agents/reviewer-code-duplication.agent.md: sha256:79c10de692b1ec706eab215f20f25d00875b9899b8d828862f6f82c6d7d1850e
+    .github/agents/reviewer-conventions.agent.md: sha256:013acf6061b5a8119a875f20784ff0fbb55909d1b9ff0ca2159267b18e2b5388
+    .github/agents/reviewer-global.agent.md: sha256:60a47f45d47f6073aa60b478111b14774f8d348c4a4839205418f46ac804fece
+    .github/agents/reviewer-rgaa-accessibility.agent.md: sha256:a957d584ebd42f487030a7582a37358b01ea278eaec4df16292248f1f9767585
+    .github/agents/reviewer-security.agent.md: sha256:0118cc7589230bf838f82a2a1adb5786638052d7ca82b5d41d240d39ed8f978a
+    .github/agents/reviewer-separation-of-concerns.agent.md: sha256:7da31676a7f61433212a8249eadc3abe1ba5d593c9f97cc1ac381719c5b4dc7a
+    .github/instructions/changelog.instructions.md: sha256:ae7d945023840c0d004e349a491426fab4a1db194e4c1a9923b9cff012ba477b
+    .github/instructions/encoding.instructions.md: sha256:7f08217d997bbf6b5c9adf84f6ab70fccc0e007b98df2b68b4c8e2a4c01c87dd
+    .github/prompts/feature-create-userstory.prompt.md: sha256:ac6da0865c6a25a66a8e9a48fc9ea121ed3727493c2701ac50024704b2a2c2b0
+    .github/prompts/feature-implement.prompt.md: sha256:754c8cb341d3d45a5fdcd1c72a2a9c8b17758ffaaa3e97a6f72ba40c97c042c6
+    .github/prompts/features-from-prd.prompt.md: sha256:4a3b3a40583c3b6cca6e1e3ef9b819178c873ad89a0c52a746112e986c81f057
+    .github/prompts/pull-request-fix.prompt.md: sha256:ebad5a7e79725bbce09893ce7c619cb369d7b9bdcee5e894a1d22d5e3a029b94
+    .github/prompts/pull-request-review.prompt.md: sha256:f12bc6d5932467437e9f7157cc8506e622a1731f862a4c99a8707f47a901d015
+    .github/prompts/review-code-duplication.prompt.md: sha256:fb0ae5ef2a531ac33f97619da4a75d8d7479db9abade990945b22f2a67dd12b6
+    .github/prompts/review-global.prompt.md: sha256:df591b1984ad7675245332df621278c308d7d4921a4cddc740d9ed449dc3676a
+    .github/prompts/review-rgaa-accessibility.prompt.md: sha256:34c6517a39cabcc234d6fee7143d322f99a1852e62c93c5a5af921c12551bd06
+  content_hash: sha256:70f47a96f1784e67340a2c787081714fb2edc7e8fb17fe841e994e94bd2e2cad
+deployments:
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ai-feedback-tracker
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ai-feedback-tracker/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:09f007ee46dd1d9c83a1b2ca792c95637a57273465c1378ceef7cc622370316f
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ai-feedback-tracker/scripts/Add-FeedbackEntry.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:56c54b3da7019483a4e5ce0220d303a7cf76fdfc9884a8b7bda4e9434b0cd742
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:a61b2737a1aa6377ecf1b18df03b199c1f490892c0ab8a5f1c007972b223d82d
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/references/azure-devops-pull-request.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:5d996900e223dda6b519742eafd9053a30e5ec60e5197b20e5e8125fea080cc0
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/references/azure-devops-workitems.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:76e94ffac959a19d4fb60d75a81d28039c3e816b3d000f30e171882f6f2d2548
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Add-PRReply.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:86f2e9a0e850181f2dc1b0d243bff8ff40853969f5b5a8bec91f3e85d2e32c7d
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Add-PRThread.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:8b5e8379bd416561456540177b17cc530ab51aed2667ce8d999c3930b2079c8d
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Add-WorkItemBranchLink.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:5f38132ce3b3c5396762531229d8002e7e9640f3ac3ec00361c67ed1c7222c64
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Add-WorkItemComment.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:c1094e7c6201a28f9f5e28e9db57cffa492328d1c49e39851288610024c577d7
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Edit-WorkItem.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:24487279434fca2f52b5585506c5e1049e488810beeb1bf4a085fddee43effb0
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Edit-WorkItemState.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:d06147cf43f0aece98f691026a7ddcf567bff86e186ad629542ccd3f409da23f
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Get-PRChanges.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:6f7a76c47ee8129e1dca2d1d57900643527d76f37257b421c484d3e8b82130cc
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Get-PRDetails.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:345e2a4c11fc45f2830528280b201d78ad34a5d24b176124087a3351f930cc17
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Get-PRList.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:d5055235fcaa2971bfa63e0a27efe4c8478ee1f8701cc17073ec278d71616bb7
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Get-PRThreads.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:296bb44296b642eb1458dab2d595034b02cf7c18b3e3cecf0b460bc5fc92be8a
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Get-WorkItem.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:7cea8035b2104ce7d3849018ef1711940f83a5457fb3019ea0e5c79644b82ca8
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/New-PullRequest.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:a2b07fe6ea338e2280e45fd0c287dfac8741e23c7cd0f4b727f80b4a6bd71556
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/New-WorkItem.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:0562714a9e7cf94e8a69e395c2a2986dedfa3ec702f66839252bfb3f290869a7
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Search-WorkItems.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:0a93ec164f15efefa62a52a7d25115446b402ae54631c1b910bfe75ad2d08c18
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/Set-PRThreadStatus.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:185ada7cd9eb0ce2ce468e58811a0ab3ca2bd2e8eb4564d15aebd40013640cc4
+- kind: project-relative
+  target: agents
+  value: .agents/skills/azure-devops/scripts/_AzdoCommon.ps1
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:a6fbb16708ffbc3f2ff971c832b049c40678bf993ab4f36883c9a22ab62a6537
+- kind: project-relative
+  target: agents
+  value: .agents/skills/caveman
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/caveman/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:a1f02ff8e87f1f3842d6baf2bb17623875ff7f35b7d43a65595031de6acbaa57
+- kind: project-relative
+  target: agents
+  value: .agents/skills/clean-architecture
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/clean-architecture/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:600d377a6bf661e9d479e443f1c1f8ade18cadb530a292eeb4f7b678cce68d70
+- kind: project-relative
+  target: agents
+  value: .agents/skills/clean-architecture/references/architecture-review.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:383098da08ff6142f91ceeb637a730f1e22c71c1c858f6216c77fb489805f1b9
+- kind: project-relative
+  target: agents
+  value: .agents/skills/clean-architecture/references/ddd-patterns.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:1d7b468187a8b8d2e0d2af2f5979dc929aa34327faf44cd7be781bb3bd49bfb0
+- kind: project-relative
+  target: agents
+  value: .agents/skills/data-modeling
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/data-modeling/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:8b1eacb0647edbe4f8ed3329ccbe00a4634b7f021d383c469a699fddca3534a2
+- kind: project-relative
+  target: agents
+  value: .agents/skills/data-modeling/references/oracle-specifics.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:b1026ec3731595939b4b4a237fb6ef6a8a4ea31aae187d1f45ee09d4ddd80d8b
+- kind: project-relative
+  target: agents
+  value: .agents/skills/read-specs
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/read-specs/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:3896f3aad164b21a8965303cadcb0330b3229fc258ecbc4ad04a6a0de17d3444
+- kind: project-relative
+  target: agents
+  value: .agents/skills/reviewer-code-duplication
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/reviewer-code-duplication/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:b531169dfc7343f7449392c417edeeb2cf60a33088390a5c7f106f9fff12d66c
+- kind: project-relative
+  target: agents
+  value: .agents/skills/reviewer-conventions
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/reviewer-conventions/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:41b2d926da149365b8380bd5b12abb5a68d5ede88e66b339b8152ee1a72e1add
+- kind: project-relative
+  target: agents
+  value: .agents/skills/reviewer-rgaa-accessibility
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/reviewer-rgaa-accessibility/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:d8e8c2108e7f090031cb6233f00054cc8182733c4a8bd4027740b5dbf1093f71
+- kind: project-relative
+  target: agents
+  value: .agents/skills/reviewer-security
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/reviewer-security/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:b54b198870d937987928ea37fb6d3bec6aa6899f6683fd8374a12ab508dd8d31
+- kind: project-relative
+  target: agents
+  value: .agents/skills/reviewer-separation-of-concerns
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/reviewer-separation-of-concerns/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:478318b450c03746b8435c438464594d64c47d1c5f3815e305e329b43e42020b
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:c9155a041493475990f52386bf26dad2764e2a9e417f5cbfe04d2f835fa41081
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/01-section-headers.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:84e12d5f25a91b922f754035abeade34004fbbfcec7a86aa967b9c62b15fae04
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/02-cards.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:3e55b7743ee4c8d2667d8ba1bc7eb73557704d798b0e4da1b27c099f2aa0594d
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/03-buttons-palette.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:a614058523345ad6eb4bde502755b8b882dade50d8f59172d7631341c53521fe
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/04-navigation-tabs.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:9c451cea24b4b26be6557bea48d09e65f512a7890d99c41187352752cc76730b
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/05-data-tables.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:3d637a507d2daaa076351f98489af683c0ad7917a1af31974d72856863ef9af2
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/06-badges.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:97b95ce7d2cf59c8b161e3b175db752fa5235a67dfe621e74742577e0e33a97e
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/07-form-inputs.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:34efd8b311078d06025a40712f8e09b6b2ed2bf0d7672701aeb80eb3ecfe8655
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/08-search-input.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:7077e4de640ecbf39efdf04e6b5af53c73a74c407d25144e986e5eb54f39067d
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/09-toggle-switch.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:c273eb878e6e793b3e1d0ae211a0446f178a87d378220ccb7fa0c93cefff5aef
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/10-file-dropzone.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:b941ff379e2cf552f8a68285138f8a166e8f014d7e4cec4c0a784872e1cd9441
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/11-alerts.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:c3e8bcb1a6ade3ebde51942f139b2a9b18ebb36277dcf7bdbcfafb30a1f23a39
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/12-modal-and-drawer.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:3f175758178ce42ae364a7d88538170713b5bee0d40695b6b0433e24098bc30e
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/13-accordion.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:aed15d17c281a41772ad63e331ea654ae87ab57291c4973a732dd020f7a33443
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/14-kpi-cards.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:8f768ab5627054a3ffaf6752340839bbcf2eddba6ed07048313ee140fa7f2b32
+- kind: project-relative
+  target: agents
+  value: .agents/skills/ui-ux-skill/references/15-progress-bars.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:7017ed0311f78a4d7b1b6248ceae236d9a1ad6e74f8d9d868f6811d8fcdc9c2d
+- kind: project-relative
+  target: copilot
+  value: .github/agents/accessibility-statement-generator.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:b13ec4c30d02e086fe7f8313df913fa371b51cc3d9dbbf2469ef73f3c65fac6d
+- kind: project-relative
+  target: copilot
+  value: .github/agents/feature-create-userstory.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:603b25a590936bea8560f4d3de3b6fd46e2a274297dc41f3caa1faf547296cc9
+- kind: project-relative
+  target: copilot
+  value: .github/agents/feature-implementer.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:aa229b77c433f7846f03a04dcd569448837a16f741fd6d1f4dae1df4193e4007
+- kind: project-relative
+  target: copilot
+  value: .github/agents/pull-request-fixer.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:76b0a0669397ebdc3b3950c3d7e383193320bedfc5ba21ebffebcd95c9b7064f
+- kind: project-relative
+  target: copilot
+  value: .github/agents/pull-request-reviewer.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:8f3f274aee68f6eaf218336e3a5adaf874c208b73671c284d574e0e8af7c23fb
+- kind: project-relative
+  target: copilot
+  value: .github/agents/reviewer-code-duplication.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:79c10de692b1ec706eab215f20f25d00875b9899b8d828862f6f82c6d7d1850e
+- kind: project-relative
+  target: copilot
+  value: .github/agents/reviewer-conventions.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:013acf6061b5a8119a875f20784ff0fbb55909d1b9ff0ca2159267b18e2b5388
+- kind: project-relative
+  target: copilot
+  value: .github/agents/reviewer-global.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:60a47f45d47f6073aa60b478111b14774f8d348c4a4839205418f46ac804fece
+- kind: project-relative
+  target: copilot
+  value: .github/agents/reviewer-rgaa-accessibility.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:a957d584ebd42f487030a7582a37358b01ea278eaec4df16292248f1f9767585
+- kind: project-relative
+  target: copilot
+  value: .github/agents/reviewer-security.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:0118cc7589230bf838f82a2a1adb5786638052d7ca82b5d41d240d39ed8f978a
+- kind: project-relative
+  target: copilot
+  value: .github/agents/reviewer-separation-of-concerns.agent.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:7da31676a7f61433212a8249eadc3abe1ba5d593c9f97cc1ac381719c5b4dc7a
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/changelog.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:ae7d945023840c0d004e349a491426fab4a1db194e4c1a9923b9cff012ba477b
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/encoding.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:7f08217d997bbf6b5c9adf84f6ab70fccc0e007b98df2b68b4c8e2a4c01c87dd
+- kind: project-relative
+  target: copilot
+  value: .github/prompts/feature-create-userstory.prompt.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:ac6da0865c6a25a66a8e9a48fc9ea121ed3727493c2701ac50024704b2a2c2b0
+- kind: project-relative
+  target: copilot
+  value: .github/prompts/feature-implement.prompt.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:754c8cb341d3d45a5fdcd1c72a2a9c8b17758ffaaa3e97a6f72ba40c97c042c6
+- kind: project-relative
+  target: copilot
+  value: .github/prompts/features-from-prd.prompt.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:4a3b3a40583c3b6cca6e1e3ef9b819178c873ad89a0c52a746112e986c81f057
+- kind: project-relative
+  target: copilot
+  value: .github/prompts/pull-request-fix.prompt.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:ebad5a7e79725bbce09893ce7c619cb369d7b9bdcee5e894a1d22d5e3a029b94
+- kind: project-relative
+  target: copilot
+  value: .github/prompts/pull-request-review.prompt.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:f12bc6d5932467437e9f7157cc8506e622a1731f862a4c99a8707f47a901d015
+- kind: project-relative
+  target: copilot
+  value: .github/prompts/review-code-duplication.prompt.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:fb0ae5ef2a531ac33f97619da4a75d8d7479db9abade990945b22f2a67dd12b6
+- kind: project-relative
+  target: copilot
+  value: .github/prompts/review-global.prompt.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:df591b1984ad7675245332df621278c308d7d4921a4cddc740d9ed449dc3676a
+- kind: project-relative
+  target: copilot
+  value: .github/prompts/review-rgaa-accessibility.prompt.md
+  runtime: null
+  scope: project
+  owners:
+  - dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  active_owner: dev.azure.com/soprasteria-is/ISSSG/AI_Toolkit_For_IS/development-generic
+  content_hash: sha256:34c6517a39cabcc234d6fee7143d322f99a1852e62c93c5a5af921c12551bd06

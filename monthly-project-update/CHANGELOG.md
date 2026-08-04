@@ -13,3 +13,9 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 ### Changed
 
 - Replace PostgreSQL persistence with SQL Server 2022 and ODBC Driver 18 support.
+- Replace free-text team/project entry with a fixed project dropdown.
+- Replace monthly reporting with an exact seven-day weekly reporting period and display the persisted record after submission.
+
+### Removed
+
+- Remove employee identity, supporting files, SMTP delivery, delivery status, and their persisted legacy data.

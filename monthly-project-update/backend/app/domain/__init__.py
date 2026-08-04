@@ -1,11 +1,3 @@
-from app.domain.model import Attachment, AttachmentKind, DeliveryStatus, ProjectUpdate
-from app.domain.values import EmailAddress, ReportingMonth
+from app.domain.model import ProjectUpdate
 
-__all__ = [
-    "Attachment",
-    "AttachmentKind",
-    "DeliveryStatus",
-    "EmailAddress",
-    "ProjectUpdate",
-    "ReportingMonth",
-]
+__all__ = ["ProjectUpdate"]

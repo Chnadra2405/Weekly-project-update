@@ -7,7 +7,7 @@ load_dotenv()
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "mssql+pyodbc://localhost/SchoolDB?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes",
+    "mssql+pyodbc://localhost\\SQLSERVER_EXP/SchoolDB?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes",
 )
 
 engine = create_engine(DATABASE_URL, echo=False, pool_pre_ping=True)
