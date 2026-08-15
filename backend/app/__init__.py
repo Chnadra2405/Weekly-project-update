@@ -1,0 +1,1 @@
+"""Weekly project update backend."""
