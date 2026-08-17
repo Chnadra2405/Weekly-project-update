@@ -7,13 +7,16 @@
     <title>Weekly Project Update</title>
   </head>
   <body>
-    <div id="root">
-      <h1>Weekly Project Update</h1>
-      <p>
-        App shell loaded. If the UI does not render here, run the frontend with
-        <strong> npm run dev</strong> from the <strong>frontend</strong> folder.
-      </p>
-    </div>
+    <script>
+      if (
+        window.location.hostname.endsWith("github.io") &&
+        window.location.pathname.endsWith("/frontend/index.html")
+      ) {
+        const appRoot = window.location.pathname.replace("/frontend/index.html", "/");
+        window.location.replace(`${window.location.origin}${appRoot}`);
+      }
+    </script>
+    <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
