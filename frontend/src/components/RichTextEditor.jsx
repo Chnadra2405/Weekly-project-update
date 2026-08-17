@@ -115,7 +115,7 @@ export default function RichTextEditor({ id, value, onChange, disabled, invalid,
                 type="button"
                 onMouseDown={(e) => {
                   e.preventDefault();
-                  editor?.chain().focus().clearHighlight().run();
+                  editor?.chain().focus().unsetHighlight().run();
                   setHighlightOpen(false);
                 }}
                 className="ssg-rte__color-btn ssg-rte__color-btn--clear"
