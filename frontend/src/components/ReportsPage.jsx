@@ -59,7 +59,21 @@ function groupByWeek(reports) {
   return [...map.values()].sort((a, b) => b.start.localeCompare(a.start));
 }
 
-export default function ReportsPage({ auth, filterTeam, onClearFilter }) {
+function isCurrentMonth(dateValue) {
+  const date = new Date(`${dateValue}T00:00:00`);
+  const now = new Date();
+  return date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth();
+}
+
+function isOldMonth(dateValue) {
+  const date = new Date(`${dateValue}T00:00:00`);
+  const now = new Date();
+  if (date.getFullYear() < now.getFullYear()) return true;
+  if (date.getFullYear() > now.getFullYear()) return false;
+  return date.getMonth() < now.getMonth();
+}
+
+export default function ReportsPage({ auth, filterTeam, onClearFilter, timeFilter = "all" }) {
   const [reports, setReports] = useState([]);
   const [state, setState] = useState("loading");
   const [error, setError] = useState("");
@@ -100,18 +114,34 @@ export default function ReportsPage({ auth, filterTeam, onClearFilter }) {
   }
 
   const allGroups = groupByWeek(reports);
+  const monthFilteredGroups = allGroups
+    .map((g) => ({
+      ...g,
+      rows: g.rows.filter((r) => {
+        if (timeFilter === "current-month") return isCurrentMonth(r.start_of_week);
+        if (timeFilter === "old") return isOldMonth(r.start_of_week);
+        return true;
+      }),
+    }))
+    .filter((g) => g.rows.length > 0);
   const weekGroups = filterTeam
-    ? allGroups
+    ? monthFilteredGroups
         .map((g) => ({ ...g, rows: g.rows.filter((r) => r.team_project === filterTeam) }))
         .filter((g) => g.rows.length > 0)
-    : allGroups;
+    : monthFilteredGroups;
+
+  const reportHeading = timeFilter === "current-month"
+    ? "Current month reports"
+    : timeFilter === "old"
+      ? "Old reports"
+      : "Submitted reports";
 
   return (
     <section className="ssg-reports" aria-labelledby="reports-heading">
       <div className="ssg-reports__heading">
         <div>
           <p className="ssg-eyebrow">Reporting history</p>
-          <h2 id="reports-heading">Submitted reports</h2>
+          <h2 id="reports-heading">{reportHeading}</h2>
         </div>
         <button
           type="button"
@@ -143,7 +173,11 @@ export default function ReportsPage({ auth, filterTeam, onClearFilter }) {
           <p>
             {filterTeam
               ? `No reports submitted for ${filterTeam} yet.`
-              : "Submitted weekly reports will appear here."}
+              : reportHeading === "Current month reports"
+                ? "No reports submitted in the current month yet."
+                : reportHeading === "Old reports"
+                  ? "No reports from older months yet."
+                  : "Submitted weekly reports will appear here."}
           </p>
         </div>
       )}

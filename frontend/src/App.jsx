@@ -1,4 +1,4 @@
-import { AlertCircle, FilePlus2, Files, Send, LogOut } from "lucide-react";
+import { AlertCircle, Archive, FilePlus2, Files, LogOut, Send } from "lucide-react";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useAuth } from "./contexts/AuthContext";
 import { submitProjectUpdate, checkExistingReport } from "./api";
@@ -18,6 +18,13 @@ const teamProjects = ["CustAppIS", "DSI Tools", "Auroria", "Other AI Initiatives
 
 function Field({ id, label, error, children }) {
   return <div className="ssg-field"><label htmlFor={id}>{label} <span aria-hidden="true">*</span></label>{children}{error && <small id={`${id}-error`} className="ssg-error">{error}</small>}</div>;
+}
+
+function reportTabForWeek(startOfWeek) {
+  const date = new Date(`${startOfWeek}T00:00:00`);
+  const now = new Date();
+  const sameMonth = date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth();
+  return sameMonth ? "current" : "old";
 }
 
 function ProjectUpdateForm() {
@@ -81,7 +88,7 @@ function ProjectUpdateForm() {
       const payload = await submitProjectUpdate(values, keyRef.current);
       setResult(payload);
       setState("complete");
-      setView("reports");
+      setView(reportTabForWeek(payload.start_of_week));
       setFilterTeam(payload.team_project);
     } catch (error) {
       setRequestError(error.message);
@@ -104,7 +111,7 @@ function ProjectUpdateForm() {
     setExistingReport(null);
     setValues(initialValues);
     setState("idle");
-    setView("reports");
+    setView(reportTabForWeek(saved.start_of_week));
     setFilterTeam(saved.team_project);
   }
 
@@ -126,10 +133,11 @@ function ProjectUpdateForm() {
         </div>
       </header>
       <nav className="ssg-view-tabs" aria-label="Project update views">
-        <button type="button" className={view === "create" ? "is-active" : ""} aria-current={view === "create" ? "page" : undefined} onClick={() => { startNew(); setView("create"); setFilterTeam(null); }}><FilePlus2 size={18} aria-hidden="true" />New report</button>
-        <button type="button" className={view === "reports" ? "is-active" : ""} aria-current={view === "reports" ? "page" : undefined} onClick={() => setView("reports")}><Files size={18} aria-hidden="true" />Reports</button>
+        <button type="button" className={view === "create" ? "is-active" : ""} aria-current={view === "create" ? "page" : undefined} onClick={() => { startNew(); setView("create"); setFilterTeam(null); }}><FilePlus2 size={18} aria-hidden="true" />Create report</button>
+        <button type="button" className={view === "current" ? "is-active" : ""} aria-current={view === "current" ? "page" : undefined} onClick={() => setView("current")}><Files size={18} aria-hidden="true" />Current Month reports</button>
+        <button type="button" className={view === "old" ? "is-active" : ""} aria-current={view === "old" ? "page" : undefined} onClick={() => setView("old")}><Archive size={18} aria-hidden="true" />Old reports</button>
       </nav>
-      {view === "reports" ? <main className="ssg-main"><ReportsPage auth={auth} filterTeam={filterTeam} onClearFilter={() => setFilterTeam(null)} /></main> : (
+      {view === "current" || view === "old" ? <main className="ssg-main"><ReportsPage auth={auth} filterTeam={filterTeam} onClearFilter={() => setFilterTeam(null)} timeFilter={view === "current" ? "current-month" : "old"} /></main> : (
       <main className="ssg-main">
         <div className="ssg-intro"><div><p className="ssg-eyebrow">Weekly reporting</p><h2>{"Capture this week's progress"}</h2></div><p>Submit one concise update for one team or project. Required fields are marked with an asterisk.</p></div>
         {result ? <SubmissionResult result={result} onNew={startNew} /> : existingReport ? (
