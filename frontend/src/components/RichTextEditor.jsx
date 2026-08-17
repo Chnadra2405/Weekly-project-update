@@ -1,7 +1,8 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Bold, Italic, List, ListOrdered } from "lucide-react";
-import { useEffect } from "react";
+import Highlight from "@tiptap/extension-highlight";
+import { Bold, Italic, List, ListOrdered, Highlighter } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const EMPTY_HTML = "<p></p>";
 
@@ -19,9 +20,18 @@ function ToolbarButton({ onClick, isActive, title, children }) {
   );
 }
 
+const HIGHLIGHT_COLORS = [
+  { name: "Yellow", color: "#FFFF00" },
+  { name: "Green", color: "#90EE90" },
+  { name: "Blue", color: "#ADD8E6" },
+  { name: "Pink", color: "#FFB6C1" },
+  { name: "Orange", color: "#FFB347" },
+];
+
 export default function RichTextEditor({ id, value, onChange, disabled, invalid, describedBy }) {
+  const [highlightOpen, setHighlightOpen] = useState(false);
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, Highlight.configure({ multicolor: true })],
     content: value || "",
     editable: !disabled,
     editorProps: {
@@ -86,6 +96,51 @@ export default function RichTextEditor({ id, value, onChange, disabled, invalid,
         >
           <ListOrdered size={14} aria-hidden="true" />
         </ToolbarButton>
+        <span className="ssg-rte__sep" role="separator" aria-orientation="vertical" />
+        <div className="ssg-rte__highlight-menu">
+          <button
+            type="button"
+            onMouseDown={(e) => { e.preventDefault(); setHighlightOpen(!highlightOpen); }}
+            className={`ssg-rte__btn${editor?.isActive("highlight") ? " is-active" : ""}`}
+            title="Text highlight"
+            aria-pressed={editor?.isActive("highlight") ?? false}
+            aria-haspopup="true"
+            aria-expanded={highlightOpen}
+          >
+            <Highlighter size={14} aria-hidden="true" />
+          </button>
+          {highlightOpen && (
+            <div className="ssg-rte__color-palette" role="menu">
+              <button
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  editor?.chain().focus().clearHighlight().run();
+                  setHighlightOpen(false);
+                }}
+                className="ssg-rte__color-btn ssg-rte__color-btn--clear"
+                title="Clear highlight"
+              >
+                None
+              </button>
+              {HIGHLIGHT_COLORS.map((hl) => (
+                <button
+                  key={hl.color}
+                  type="button"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    editor?.chain().focus().setHighlight({ color: hl.color }).run();
+                    setHighlightOpen(false);
+                  }}
+                  className="ssg-rte__color-btn"
+                  style={{ backgroundColor: hl.color }}
+                  title={`Highlight ${hl.name}`}
+                  aria-label={`${hl.name} highlight`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
       <EditorContent editor={editor} />
     </div>

@@ -159,6 +159,12 @@ button, label[for] { -webkit-tap-highlight-color: transparent; }
 .ssg-rte__btn:hover { background: #f0ecf6; color: var(--purple); border-color: var(--line); }
 .ssg-rte__btn.is-active { background: #ede8f6; color: var(--purple); border-color: #c9bde3; }
 .ssg-rte__sep { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
+.ssg-rte__highlight-menu { position: relative; display: inline-block; }
+.ssg-rte__color-palette { position: absolute; top: 100%; left: 0; background: white; border: 1px solid var(--line); border-radius: 4px; padding: 6px; display: flex; gap: 4px; flex-wrap: wrap; width: 140px; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.ssg-rte__color-btn { width: 28px; height: 28px; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; padding: 0; background: white; }
+.ssg-rte__color-btn:hover { border-color: var(--purple); box-shadow: 0 0 4px rgba(77, 29, 130, 0.3); }
+.ssg-rte__color-btn:focus-visible { outline: 2px solid var(--purple); outline-offset: 1px; }
+.ssg-rte__color-btn--clear { width: 100%; height: auto; padding: 4px; color: var(--muted); font-size: 0.7rem; font-weight: 600; border: 1px solid var(--line); text-align: center; background: white; }
 .ssg-rte .tiptap { padding: 10px 12px; min-height: 112px; outline: none; font-size: 0.9rem; line-height: 1.55; }
 .ssg-rte .tiptap p { margin: 0 0 6px; }
 .ssg-rte .tiptap p:last-child { margin-bottom: 0; }
