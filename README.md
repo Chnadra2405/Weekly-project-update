@@ -67,3 +67,18 @@ npm run lint
 npm run test -- --run
 npm run build
 ```
+
+## GitHub Pages deployment
+
+The frontend can be deployed automatically from this repository using GitHub Actions.
+
+1. Go to repository Settings > Pages.
+2. Set Source to GitHub Actions.
+3. Optionally set repository variable `VITE_API_BASE_URL` under Settings > Secrets and variables > Actions > Variables.
+4. Push to `main` to trigger `.github/workflows/deploy-frontend-pages.yml`.
+
+When deployment completes, the site will be available at:
+
+```text
+https://<github-username>.github.io/Weekly-project-update/
+```
