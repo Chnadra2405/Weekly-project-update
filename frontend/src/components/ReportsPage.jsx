@@ -28,16 +28,11 @@ function SafeHtml({ html, className }) {
 function ContentCell({ reportId, field, label, html, expandedCells, onToggle }) {
   const key = `${reportId}-${field}`;
   const expanded = expandedCells.has(key);
-  const plain = stripHtml(html);
-  const truncated = plain.length > PREVIEW_LENGTH;
+  const truncated = stripHtml(html).length > PREVIEW_LENGTH;
 
   return (
     <td data-label={label}>
-      {!truncated || expanded ? (
-        <SafeHtml html={html} className="ssg-rt-content" />
-      ) : (
-        <p className="ssg-rt-preview">{plain.slice(0, PREVIEW_LENGTH)}&hellip;</p>
-      )}
+      <SafeHtml html={html} className={`ssg-rt-content${truncated && !expanded ? " ssg-rt-content--collapsed" : ""}`} />
       {truncated && (
         <button type="button" className="ssg-expand-btn" onClick={() => onToggle(key)}>
           {expanded

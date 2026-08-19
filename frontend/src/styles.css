@@ -198,5 +198,6 @@ button, label[for] { -webkit-tap-highlight-color: transparent; }
 
 /* ---- Expand / collapse content ---- */
 .ssg-rt-preview { margin: 0; font-size: 0.88rem; line-height: 1.5; color: #454542; }
+.ssg-rt-content--collapsed { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .ssg-expand-btn { display: inline-flex; align-items: center; gap: 3px; margin-top: 5px; background: none; border: none; color: var(--purple); cursor: pointer; font-size: 0.8rem; font-weight: 600; padding: 0; }
 .ssg-expand-btn:hover { text-decoration: underline; }
