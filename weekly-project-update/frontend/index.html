@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4d1d82" />
+    <title>Weekly Project Update</title>
+  </head>
+  <body>
+    <script>
+      if (
+        window.location.hostname.endsWith("github.io") &&
+        window.location.pathname.endsWith("/frontend/index.html")
+      ) {
+        const appRoot = window.location.pathname.replace("/frontend/index.html", "/");
+        window.location.replace(`${window.location.origin}${appRoot}`);
+      }
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
