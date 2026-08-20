@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from uuid import UUID
 
 from sqlalchemy import Boolean, CheckConstraint, DateTime, Date, ForeignKey, Index, String, Text, Unicode, Uuid, create_engine, select
@@ -18,7 +18,7 @@ class UserModel(Base):
     __tablename__ = "users"
     __table_args__ = (
         CheckConstraint(
-            "role IN ('EMPLOYEE', 'MANAGER', 'ADMIN')",
+            "role IN ('APP_ADMIN', 'DU_HEAD', 'TEAM_MANAGER', 'TEAM_LEAD')",
             name="ck_users_role",
         ),
         Index("ix_users_username", "username"),
@@ -29,7 +29,7 @@ class UserModel(Base):
     username: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
     email: Mapped[str] = mapped_column(String(320), nullable=False, unique=True)
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
-    role: Mapped[str] = mapped_column(String(20), nullable=False, default="EMPLOYEE")
+    role: Mapped[str] = mapped_column(String(20), nullable=False, default="TEAM_LEAD")
     team: Mapped[str | None] = mapped_column(String(100), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
@@ -45,6 +45,21 @@ class TeamAssignmentModel(Base):
     id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     manager_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     employee_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class DelegationModel(Base):
+    __tablename__ = "delegations"
+    __table_args__ = (
+        Index("ix_delegations_manager_id", "manager_id"),
+        Index("ix_delegations_delegate_id", "delegate_id"),
+        Index("ix_delegations_is_active", "is_active"),
+    )
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    manager_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
+    delegate_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
+    created_by_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
@@ -68,6 +83,9 @@ class ProjectUpdateModel(Base):
     next_weeks_plan: Mapped[str] = mapped_column(Text, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    approval_status: Mapped[str] = mapped_column(String(20), nullable=False, default="DRAFT")
+    approved_by_id: Mapped[UUID | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    approved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 def to_domain(model: ProjectUpdateModel) -> ProjectUpdate:
@@ -84,6 +102,9 @@ def to_domain(model: ProjectUpdateModel) -> ProjectUpdate:
         created_at=model.created_at,
         updated_at=model.updated_at,
         user_id=model.user_id,
+        approval_status=model.approval_status,
+        approved_by_id=model.approved_by_id,
+        approved_at=model.approved_at,
     )
 
 
@@ -151,6 +172,19 @@ class SqlAlchemyUnitOfWork:
             model.initiatives = update.initiatives
             model.next_weeks_plan = update.next_weeks_plan
             model.updated_at = update.updated_at
+            session.commit()
+            session.refresh(model)
+            return to_domain(model)
+
+    def approve(self, update_id: UUID, approver_id: UUID) -> ProjectUpdate | None:
+        with self.session_factory() as session:
+            model = session.get(ProjectUpdateModel, update_id)
+            if model is None:
+                return None
+            model.approval_status = "APPROVED"
+            model.approved_by_id = approver_id
+            model.approved_at = datetime.now(timezone.utc)
+            model.updated_at = datetime.now(timezone.utc)
             session.commit()
             session.refresh(model)
             return to_domain(model)

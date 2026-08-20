@@ -80,6 +80,20 @@ class CheckExistingReport:
         return self.unit_of_work.find_by_week_and_team(user_id, start_of_week, team_project)
 
 
+class ApproveProjectUpdate:
+    def __init__(self, unit_of_work: UnitOfWork) -> None:
+        self.unit_of_work = unit_of_work
+
+    def execute(self, update_id: UUID, approver_id: UUID) -> ProjectUpdate | None:
+        existing = self.unit_of_work.get(update_id)
+        if existing is None:
+            return None
+        # Idempotent: already approved is fine
+        if existing.approval_status == "APPROVED":
+            return existing
+        return self.unit_of_work.approve(update_id, approver_id)
+
+
 class ListProjectUpdates:
     def __init__(self, unit_of_work: UnitOfWork) -> None:
         self.unit_of_work = unit_of_work
@@ -93,9 +107,21 @@ class UpdateProjectUpdate:
         self.unit_of_work = unit_of_work
         self.clock = clock
 
-    def execute(self, update_id: UUID, owner_id: UUID, command: UpdateCommand) -> ProjectUpdate | None:
+    def execute(self, update_id: UUID, editor_id: UUID, editor_role: str, command: UpdateCommand) -> ProjectUpdate | None:
         existing = self.unit_of_work.get(update_id)
-        if existing is None or existing.user_id != owner_id:
+        if existing is None:
+            return None
+
+        # Approved reports cannot be edited (APP_ADMIN is exempt)
+        if existing.approval_status == "APPROVED" and editor_role != "APP_ADMIN":
+            return None
+
+        # DU_HEAD is read-only
+        if editor_role == "DU_HEAD":
+            return None
+
+        # TEAM_LEAD may only edit their own reports (checked at API layer too)
+        if editor_role == "TEAM_LEAD" and existing.user_id != editor_id:
             return None
 
         updated = ProjectUpdate(

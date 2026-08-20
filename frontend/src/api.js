@@ -110,3 +110,55 @@ export async function updateProjectUpdate(updateId, values) {
   });
   return parseResponse(response);
 }
+
+export async function approveReport(reportId) {
+  const response = await fetch(`${API_BASE_URL}/project-updates/${reportId}/approve`, {
+    method: "POST",
+    headers: getHeaders(),
+  });
+  return parseResponse(response);
+}
+
+export async function exportReports(format) {
+  const token = getAuthToken();
+  const response = await fetch(`${API_BASE_URL}/project-updates/export/${format}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!response.ok) {
+    let payload = {};
+    try { payload = await response.json(); } catch { /* ignore */ }
+    const error = new Error(errorMessage(payload.detail));
+    error.status = response.status;
+    throw error;
+  }
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = format === "excel" ? "weekly_project_updates.xlsx" : "weekly_project_updates.pptx";
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  // Delay cleanup so the browser has time to start the download
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 200);
+}
+
+export async function assignDelegate(managerId, delegateId) {
+  const response = await fetch(`${API_BASE_URL}/auth/delegate`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ manager_id: managerId, delegate_id: delegateId }),
+  });
+  return parseResponse(response);
+}
+
+export async function fetchUsers(role) {
+  const params = role ? `?role=${encodeURIComponent(role)}` : "";
+  const response = await fetch(`${API_BASE_URL}/auth/users${params}`, {
+    headers: getHeaders(),
+  });
+  return parseResponse(response);
+}

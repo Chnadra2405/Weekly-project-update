@@ -7,7 +7,7 @@ class UserRegisterRequest(BaseModel):
     username: str = Field(..., min_length=1, max_length=100)
     email: EmailStr
     password: str = Field(..., min_length=8, max_length=255)
-    role: str = Field(default="EMPLOYEE")
+    role: str = Field(default="TEAM_LEAD")
     team: str | None = Field(None, max_length=100)
 
 

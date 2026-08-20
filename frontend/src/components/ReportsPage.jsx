@@ -1,7 +1,7 @@
 ﻿import DOMPurify from "dompurify";
-import { AlertCircle, ChevronDown, ChevronUp, Pencil, RefreshCw, X } from "lucide-react";
+import { AlertCircle, CheckCircle, ChevronDown, ChevronUp, Download, FileSpreadsheet, Pencil, RefreshCw, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { fetchProjectUpdates } from "../api";
+import { approveReport, exportReports, fetchProjectUpdates } from "../api";
 import ReportEditor from "./ReportEditor";
 
 const ALLOWED_TAGS = ["p", "strong", "em", "s", "ul", "ol", "li", "br", "blockquote", "code", "mark"];
@@ -74,6 +74,7 @@ export default function ReportsPage({ auth, filterTeam, onClearFilter, timeFilte
   const [error, setError] = useState("");
   const [editing, setEditing] = useState(null);
   const [expandedCells, setExpandedCells] = useState(new Set());
+  const [exportError, setExportError] = useState("");
 
   function toggleCell(key) {
     setExpandedCells((prev) => {
@@ -102,6 +103,24 @@ export default function ReportsPage({ auth, filterTeam, onClearFilter, timeFilte
   function handleSaved(savedReport) {
     setReports((current) => current.map((r) => (r.id === savedReport.id ? savedReport : r)));
     setEditing(null);
+  }
+
+  async function handleApprove(reportId) {
+    try {
+      const updated = await approveReport(reportId);
+      setReports((current) => current.map((r) => (r.id === updated.id ? updated : r)));
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function handleExport(format) {
+    setExportError("");
+    try {
+      await exportReports(format);
+    } catch (err) {
+      setExportError(err.message);
+    }
   }
 
   if (editing) {
@@ -138,15 +157,33 @@ export default function ReportsPage({ auth, filterTeam, onClearFilter, timeFilte
           <p className="ssg-eyebrow">Reporting history</p>
           <h2 id="reports-heading">{reportHeading}</h2>
         </div>
-        <button
-          type="button"
-          className="ssg-button ssg-button--secondary"
-          onClick={loadReports}
-          disabled={state === "loading"}
-        >
-          <RefreshCw size={18} aria-hidden="true" />Refresh
-        </button>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          {auth?.role === "DU_HEAD" && (
+            <>
+              <button type="button" className="ssg-button ssg-button--secondary" onClick={() => handleExport("excel")} title="Export to Excel">
+                <FileSpreadsheet size={18} aria-hidden="true" />Export Excel
+              </button>
+              <button type="button" className="ssg-button ssg-button--secondary" onClick={() => handleExport("ppt")} title="Export to PowerPoint">
+                <Download size={18} aria-hidden="true" />Export PPT
+              </button>
+            </>
+          )}
+          <button
+            type="button"
+            className="ssg-button ssg-button--secondary"
+            onClick={loadReports}
+            disabled={state === "loading"}
+          >
+            <RefreshCw size={18} aria-hidden="true" />Refresh
+          </button>
+        </div>
       </div>
+      {exportError && (
+        <div className="ssg-summary" role="alert">
+          <AlertCircle size={20} aria-hidden="true" />
+          <div><strong>Export failed.</strong><p>{exportError}</p></div>
+        </div>
+      )}
       {filterTeam && (
         <div className="ssg-filter-banner" role="status">
           <span>Showing reports for: <strong>{filterTeam}</strong></span>
@@ -189,6 +226,7 @@ export default function ReportsPage({ auth, filterTeam, onClearFilter, timeFilte
               <thead>
                 <tr>
                   <th scope="col">Team</th>
+                  {auth?.role !== "DU_HEAD" && <th scope="col">Status</th>}
                   <th scope="col">Achievements <span className="ssg-col-hint">(Key Deliverables Completed)</span></th>
                   <th scope="col">Initiatives <span className="ssg-col-hint">(Major Work Started/Ongoing)</span></th>
                   <th scope="col">{"Next Week's plan"} <span className="ssg-col-hint">(Top 2 to 3 priorities)</span></th>
@@ -197,10 +235,31 @@ export default function ReportsPage({ auth, filterTeam, onClearFilter, timeFilte
               </thead>
               <tbody>
                 {group.rows.map((report) => {
-                  const canEdit = report.user_id === auth.id;
+                  const approved = report.approval_status === "APPROVED";
+                  const canEdit = !approved && (
+                    (auth?.role === "TEAM_LEAD" && report.user_id === auth.id) ||
+                    auth?.role === "TEAM_MANAGER" ||
+                    auth?.role === "APP_ADMIN"
+                  );
+                  const canApprove = !approved && auth?.role === "TEAM_MANAGER";
                   return (
                     <tr key={report.id}>
                       <td data-label="Team" className="ssg-team-cell">{report.team_project}</td>
+                      {auth?.role !== "DU_HEAD" && (
+                        <td data-label="Status">
+                          <span style={{
+                            display: "inline-block",
+                            padding: "2px 8px",
+                            borderRadius: "12px",
+                            fontSize: "0.75rem",
+                            fontWeight: 600,
+                            background: approved ? "#d1fae5" : "#f3f4f6",
+                            color: approved ? "#065f46" : "#374151",
+                          }}>
+                            {approved ? "Approved" : "Draft"}
+                          </span>
+                        </td>
+                      )}
                       <ContentCell
                         reportId={report.id} field="achievements" label="Achievements"
                         html={report.achievements} expandedCells={expandedCells} onToggle={toggleCell}
@@ -223,6 +282,18 @@ export default function ReportsPage({ auth, filterTeam, onClearFilter, timeFilte
                             title="Edit report"
                           >
                             <Pencil size={18} aria-hidden="true" />
+                          </button>
+                        )}
+                        {canApprove && (
+                          <button
+                            type="button"
+                            className="ssg-icon-button"
+                            onClick={() => handleApprove(report.id)}
+                            aria-label={`Approve report for ${formatDate(report.start_of_week)}`}
+                            title="Approve report"
+                            style={{ color: "#065f46" }}
+                          >
+                            <CheckCircle size={18} aria-hidden="true" />
                           </button>
                         )}
                       </td>

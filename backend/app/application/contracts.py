@@ -48,6 +48,7 @@ class UnitOfWork(Protocol):
     def find_by_week_and_team(
         self, user_id: UUID, start_of_week: date, team_project: str
     ) -> ProjectUpdate | None: ...
+    def approve(self, update_id: UUID, approver_id: UUID) -> ProjectUpdate | None: ...
 
 
 class Clock(Protocol):

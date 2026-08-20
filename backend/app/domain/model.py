@@ -21,6 +21,9 @@ class ProjectUpdate:
     created_at: datetime | None = None
     updated_at: datetime | None = None
     user_id: UUID | None = None
+    approval_status: str = "DRAFT"  # "DRAFT" | "APPROVED"
+    approved_by_id: UUID | None = None
+    approved_at: datetime | None = None
 
     def __post_init__(self) -> None:
         for field_name in (

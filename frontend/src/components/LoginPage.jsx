@@ -8,7 +8,7 @@ function LoginPage({ onLoginSuccess }) {
   const [loading, setLoading] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("EMPLOYEE");
+  const [role, setRole] = useState("TEAM_LEAD");
   const [team, setTeam] = useState("");
 
   async function handleLogin(event) {
@@ -147,9 +147,10 @@ function LoginPage({ onLoginSuccess }) {
                     disabled={loading}
                     aria-required="true"
                   >
-                    <option value="EMPLOYEE">Employee</option>
-                    <option value="MANAGER">Manager</option>
-                    <option value="ADMIN">Admin</option>
+                    <option value="TEAM_LEAD">Team Lead</option>
+                    <option value="TEAM_MANAGER">Team Manager</option>
+                    <option value="DU_HEAD">DU Head</option>
+                    <option value="APP_ADMIN">Application Admin</option>
                   </select>
                 </div>
 

@@ -60,12 +60,22 @@ class FakeList:
 class FakeUpdate:
     def __init__(self, update: ProjectUpdate | None = None) -> None:
         self.update = update
-        self.owner_id: UUID | None = None
+        self.editor_id: UUID | None = None
+        self.editor_role: str | None = None
         self.command: UpdateCommand | None = None
 
-    def execute(self, update_id: UUID, owner_id: UUID, command: UpdateCommand) -> ProjectUpdate | None:
-        self.owner_id = owner_id
+    def execute(self, update_id: UUID, editor_id: UUID, editor_role: str, command: UpdateCommand) -> ProjectUpdate | None:
+        self.editor_id = editor_id
+        self.editor_role = editor_role
         self.command = command
+        return self.update
+
+
+class FakeApprove:
+    def __init__(self, update: ProjectUpdate | None = None) -> None:
+        self.update = update
+
+    def execute(self, update_id: UUID, approver_id: UUID) -> ProjectUpdate | None:
         return self.update
 
 
@@ -79,6 +89,9 @@ class FakeAuthService:
     def get_usernames_by_ids(self, user_ids: set[UUID]) -> dict[UUID, str]:
         return {user_id: f"user-{index}" for index, user_id in enumerate(user_ids, start=1)}
 
+    def get_active_delegation_for_delegate(self, delegate_id: UUID) -> UUID | None:
+        return None
+
 
 class FakeCheckExisting:
     def __init__(self, report: ProjectUpdate | None = None) -> None:
@@ -91,12 +104,13 @@ class FakeCheckExisting:
 def client_for(
     submit: FakeSubmit,
     *,
-    role: str = "EMPLOYEE",
+    role: str = "TEAM_LEAD",
     user_id: UUID | None = None,
     get_update: FakeGet | None = None,
     list_updates: FakeList | None = None,
     update: FakeUpdate | None = None,
     check_existing: FakeCheckExisting | None = None,
+    approve: FakeApprove | None = None,
     auth_service: FakeAuthService | None = None,
 ) -> TestClient:
     current_user_id = user_id or uuid4()
@@ -112,6 +126,7 @@ def client_for(
             list_updates or FakeList(),
             update or FakeUpdate(),
             check_existing or FakeCheckExisting(),
+            approve or FakeApprove(),
             get_current_user,
             auth_service or FakeAuthService(),
         )
@@ -161,7 +176,7 @@ def test_create_returns_all_persisted_record_data() -> None:
     assert response.json().keys() == {
         "id", "user_id", "owner_username", "start_of_week", "end_of_week",
         "team_project", "achievements", "initiatives", "next_weeks_plan",
-        "created_at", "updated_at",
+        "created_at", "updated_at", "approval_status", "approved_by_id", "approved_at",
     }
     assert response.json()["start_of_week"] == "2026-07-20"
     assert response.json()["next_weeks_plan"] == "Complete API testing"
@@ -216,27 +231,28 @@ def test_employee_list_is_scoped_to_current_user() -> None:
     assert response.json()[0]["user_id"] == str(user_id)
 
 
-def test_manager_list_is_scoped_to_self_and_team() -> None:
+def test_manager_list_sees_all_reports() -> None:
     manager_id = uuid4()
     employee_id = uuid4()
     list_updates = FakeList()
 
     response = client_for(
         FakeSubmit(),
-        role="MANAGER",
+        role="TEAM_MANAGER",
         user_id=manager_id,
         list_updates=list_updates,
         auth_service=FakeAuthService([employee_id]),
     ).get("/api/v1/project-updates")
 
     assert response.status_code == 200
-    assert list_updates.user_ids == {manager_id, employee_id}
+    # TEAM_MANAGER sees all reports (user_ids=None means unscoped)
+    assert list_updates.user_ids is None
 
 
 def test_admin_list_is_unscoped() -> None:
     list_updates = FakeList()
 
-    response = client_for(FakeSubmit(), role="ADMIN", list_updates=list_updates).get(
+    response = client_for(FakeSubmit(), role="APP_ADMIN", list_updates=list_updates).get(
         "/api/v1/project-updates"
     )
 
@@ -247,24 +263,25 @@ def test_admin_list_is_unscoped() -> None:
 def test_owner_can_edit_report() -> None:
     user_id = uuid4()
     existing = project_update(user_id)
-    update = FakeUpdate(existing)
+    fake_update = FakeUpdate(existing)
 
-    response = client_for(FakeSubmit(), user_id=user_id, update=update).put(
+    response = client_for(FakeSubmit(), user_id=user_id, get_update=FakeGet(existing), update=fake_update).put(
         f"/api/v1/project-updates/{existing.id}", json=form_data()
     )
 
     assert response.status_code == 200
-    assert update.owner_id == user_id
-    assert update.command is not None
-    assert update.command.achievements == "Released version 1.0"
+    assert fake_update.editor_id == user_id
+    assert fake_update.command is not None
+    assert fake_update.command.achievements == "Released version 1.0"
 
 
 def test_non_owner_cannot_edit_report() -> None:
-    existing = project_update(uuid4())
+    owner_id = uuid4()
+    existing = project_update(owner_id)
 
     response = client_for(
         FakeSubmit(),
-        role="ADMIN",
+        role="TEAM_LEAD",
         get_update=FakeGet(existing),
         update=FakeUpdate(),
     ).put(f"/api/v1/project-updates/{existing.id}", json=form_data())

@@ -6,6 +6,7 @@ from sqlalchemy import text
 
 from app.application.auth_service import AuthService
 from app.application.services import (
+    ApproveProjectUpdate,
     CheckExistingReport,
     GetProjectUpdate,
     ListProjectUpdates,
@@ -27,6 +28,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     submit = SubmitProjectUpdate(unit_of_work, SystemClock())
     list_updates = ListProjectUpdates(unit_of_work)
     update_project_update = UpdateProjectUpdate(unit_of_work, SystemClock())
+    approve_project_update = ApproveProjectUpdate(unit_of_work)
     check_existing = CheckExistingReport(unit_of_work)
     auth_service = AuthService(
         session_factory=session_factory,
@@ -42,11 +44,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "OPTIONS"],
         allow_headers=["Content-Type", "Idempotency-Key", "Authorization"],
+        expose_headers=["Content-Disposition"],
     )
 
     get_current_user = create_get_current_user(auth_service)
 
-    application.include_router(create_auth_router(auth_service))
+    application.include_router(create_auth_router(auth_service, get_current_user))
     application.include_router(
         create_project_update_router(
             submit,
@@ -54,6 +57,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             list_updates,
             update_project_update,
             check_existing,
+            approve_project_update,
             get_current_user,
             auth_service,
         )

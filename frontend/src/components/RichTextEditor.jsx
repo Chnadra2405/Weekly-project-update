@@ -1,7 +1,9 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
-import { Bold, Italic, List, ListOrdered, Highlighter } from "lucide-react";
+import Typography from "@tiptap/extension-typography";
+import { AutoCorrect } from "./AutoCorrectExtension";
+import { Bold, Italic, List, Highlighter } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const EMPTY_HTML = "<p></p>";
@@ -31,13 +33,21 @@ const HIGHLIGHT_COLORS = [
 export default function RichTextEditor({ id, value, onChange, disabled, invalid, describedBy }) {
   const [highlightOpen, setHighlightOpen] = useState(false);
   const editor = useEditor({
-    extensions: [StarterKit, Highlight.configure({ multicolor: true })],
+    extensions: [
+      StarterKit.configure({ orderedList: false }),
+      Highlight.configure({ multicolor: true }),
+      Typography,
+      AutoCorrect,
+    ],
     content: value || "",
     editable: !disabled,
     editorProps: {
       attributes: {
         role: "textbox",
         "aria-multiline": "true",
+        spellcheck: "true",
+        autocorrect: "on",
+        autocapitalize: "sentences",
         ...(id ? { id } : {}),
         ...(invalid ? { "aria-invalid": "true" } : {}),
         ...(describedBy ? { "aria-describedby": describedBy } : {}),
@@ -88,13 +98,6 @@ export default function RichTextEditor({ id, value, onChange, disabled, invalid,
           title="Bullet list"
         >
           <List size={14} aria-hidden="true" />
-        </ToolbarButton>
-        <ToolbarButton
-          onClick={() => editor?.chain().focus().toggleOrderedList().run()}
-          isActive={editor?.isActive("orderedList") ?? false}
-          title="Numbered list"
-        >
-          <ListOrdered size={14} aria-hidden="true" />
         </ToolbarButton>
         <span className="ssg-rte__sep" role="separator" aria-orientation="vertical" />
         <div className="ssg-rte__highlight-menu">

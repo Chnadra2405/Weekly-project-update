@@ -8,7 +8,7 @@ import bcrypt
 from sqlalchemy import select
 from sqlalchemy.orm import sessionmaker, Session
 
-from app.infrastructure.database import UserModel, TeamAssignmentModel
+from app.infrastructure.database import UserModel, TeamAssignmentModel, DelegationModel
 
 
 class AuthService:
@@ -125,3 +125,48 @@ class AuthService:
             session.add(assignment)
             session.commit()
             return True
+
+    def assign_delegate(self, manager_id: UUID, delegate_id: UUID, created_by_id: UUID) -> bool:
+        """APP_ADMIN assigns a delegate for an absent TEAM_MANAGER."""
+        with self.session_factory() as session:
+            # Deactivate any existing active delegation for this manager
+            existing = session.scalar(
+                select(DelegationModel).where(
+                    (DelegationModel.manager_id == manager_id)
+                    & (DelegationModel.is_active == True)  # noqa: E712
+                )
+            )
+            if existing:
+                existing.is_active = False
+                session.flush()
+            now = datetime.now(timezone.utc)
+            delegation = DelegationModel(
+                id=uuid4(),
+                manager_id=manager_id,
+                delegate_id=delegate_id,
+                created_by_id=created_by_id,
+                is_active=True,
+                created_at=now,
+            )
+            session.add(delegation)
+            session.commit()
+            return True
+
+    def get_active_delegation_for_delegate(self, delegate_id: UUID) -> UUID | None:
+        """Return the manager_id for which this user is an active delegate, or None."""
+        with self.session_factory() as session:
+            result = session.scalar(
+                select(DelegationModel.manager_id).where(
+                    (DelegationModel.delegate_id == delegate_id)
+                    & (DelegationModel.is_active == True)  # noqa: E712
+                )
+            )
+            return result
+
+    def get_users(self, role: str | None = None) -> list[UserModel]:
+        """Return all active users, optionally filtered by role."""
+        with self.session_factory() as session:
+            stmt = select(UserModel).where(UserModel.is_active == True)  # noqa: E712
+            if role:
+                stmt = stmt.where(UserModel.role == role)
+            return list(session.scalars(stmt.order_by(UserModel.username)).all())
