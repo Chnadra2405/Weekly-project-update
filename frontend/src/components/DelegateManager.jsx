@@ -79,108 +79,130 @@ export default function DelegateManager() {
         </div>
       </div>
 
-      <div style={{ maxWidth: "520px" }}>
-        <p style={{ marginBottom: "1.5rem", color: "#6b7280", lineHeight: 1.6 }}>
-          When a Team Manager is unavailable or absent, assign another user to review
-          and approve reports on their behalf. Only one active delegate per manager is
-          allowed — assigning a new one automatically replaces the previous.
-        </p>
+      {(error || message) && (
+        <div style={{ marginBottom: "1.5rem" }}>
+          {error && (
+            <div className="ssg-summary" role="alert">
+              <AlertCircle size={20} aria-hidden="true" />
+              <div><strong>Error.</strong> <span>{error}</span></div>
+            </div>
+          )}
+          {message && (
+            <div className="ssg-summary" role="status" style={{ background: "#d1fae5", borderColor: "#065f46" }}>
+              <CheckCircle size={20} aria-hidden="true" style={{ color: "#065f46" }} />
+              <div><strong style={{ color: "#065f46" }}>{message}</strong></div>
+            </div>
+          )}
+        </div>
+      )}
 
-        {error && (
-          <div className="ssg-summary" role="alert" style={{ marginBottom: "1rem" }}>
-            <AlertCircle size={20} aria-hidden="true" />
-            <div><strong>Error.</strong> <span>{error}</span></div>
-          </div>
-        )}
+      <div style={{ display: "grid", gridTemplateColumns: "450px 1fr", gap: "1.5rem", alignItems: "start" }}>
 
-        {message && (
-          <div
-            className="ssg-summary"
-            role="status"
-            style={{ background: "#d1fae5", borderColor: "#065f46", marginBottom: "1rem" }}
-          >
-            <CheckCircle size={20} aria-hidden="true" style={{ color: "#065f46" }} />
-            <div><strong style={{ color: "#065f46" }}>{message}</strong></div>
-          </div>
-        )}
+        {/* ── Assign form card ── */}
+        <div style={{ background: "white", border: "1px solid #e5e5e2", borderRadius: "10px", padding: "1.75rem" }}>
+          <h3 style={{ margin: "0 0 0.4rem", fontSize: "1rem", fontWeight: 700 }}>Assign Delegate</h3>
+          <p style={{ margin: "0 0 1.5rem", color: "#6b7280", fontSize: "0.875rem", lineHeight: 1.6 }}>
+            When a Team Manager is unavailable, assign another user to review and approve
+            reports on their behalf. Only one active delegate per manager is allowed.
+          </p>
 
-        <form onSubmit={handleAssign} noValidate>
-          <div className="ssg-field">
-            <label htmlFor="absent-manager">
-              Absent Team Manager <span aria-hidden="true">*</span>
-            </label>
-            <select
-              id="absent-manager"
-              value={managerId}
-              onChange={(e) => { setManagerId(e.target.value); setDelegateId(""); }}
-              required
-              disabled={state === "submitting"}
-              aria-required="true"
-            >
-              <option value="">Select a Team Manager</option>
-              {managers.map((m) => (
-                <option key={m.id} value={m.id}>{m.username}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="ssg-field">
-            <label htmlFor="delegate-user">
-              Acting Delegate <span aria-hidden="true">*</span>
-            </label>
-            <select
-              id="delegate-user"
-              value={delegateId}
-              onChange={(e) => setDelegateId(e.target.value)}
-              required
-              disabled={state === "submitting" || !managerId}
-              aria-required="true"
-            >
-              <option value="">Select a user</option>
-              {allUsers
-                .filter((u) => u.id !== managerId)
-                .map((u) => (
-                  <option key={u.id} value={u.id}>
-                    {u.username} — {roleLabel[u.role] ?? u.role}
-                  </option>
+          <form onSubmit={handleAssign} noValidate>
+            <div className="ssg-field">
+              <label htmlFor="absent-manager">
+                Absent Team Manager <span aria-hidden="true">*</span>
+              </label>
+              <select
+                id="absent-manager"
+                value={managerId}
+                onChange={(e) => { setManagerId(e.target.value); setDelegateId(""); }}
+                required
+                disabled={state === "submitting"}
+                aria-required="true"
+              >
+                <option value="">Select a Team Manager</option>
+                {managers.map((m) => (
+                  <option key={m.id} value={m.id}>{m.username}</option>
                 ))}
-            </select>
-            {managerId && (
-              <small style={{ color: "#6b7280" }}>
-                The selected user will be able to review and approve reports until the
-                delegate is changed or removed.
-              </small>
-            )}
-          </div>
+              </select>
+            </div>
 
-          <div style={{ marginTop: "1.5rem" }}>
-            <button
-              type="submit"
-              className="ssg-button ssg-button--primary"
-              disabled={state === "submitting" || !managerId || !delegateId}
-            >
-              <UserCheck size={18} aria-hidden="true" />
-              {state === "submitting" ? "Assigning…" : "Assign Delegate"}
-            </button>
-          </div>
-        </form>
+            <div className="ssg-field">
+              <label htmlFor="delegate-user">
+                Acting Delegate <span aria-hidden="true">*</span>
+              </label>
+              <select
+                id="delegate-user"
+                value={delegateId}
+                onChange={(e) => setDelegateId(e.target.value)}
+                required
+                disabled={state === "submitting" || !managerId}
+                aria-required="true"
+              >
+                <option value="">Select a user</option>
+                {allUsers
+                  .filter((u) => u.id !== managerId)
+                  .map((u) => (
+                    <option key={u.id} value={u.id}>
+                      {u.username} — {roleLabel[u.role] ?? u.role}
+                    </option>
+                  ))}
+              </select>
+              {managerId && (
+                <small style={{ color: "#6b7280" }}>
+                  This user will be able to approve reports until the delegate is removed.
+                </small>
+              )}
+            </div>
 
-        {delegations.length > 0 && (
-          <div style={{ marginTop: "2rem" }}>
-            <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "0.75rem" }}>Active Delegates</h3>
-            <table className="ssg-data-table" style={{ width: "100%" }}>
+            <div style={{ marginTop: "1.5rem" }}>
+              <button
+                type="submit"
+                className="ssg-button ssg-button--primary"
+                disabled={state === "submitting" || !managerId || !delegateId}
+                style={{ width: "100%" }}
+              >
+                <UserCheck size={18} aria-hidden="true" />
+                {state === "submitting" ? "Assigning…" : "Assign Delegate"}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* ── Active delegates card ── */}
+        <div style={{ background: "white", border: "1px solid #e5e5e2", borderRadius: "10px", padding: "1.75rem" }}>
+          <h3 style={{ margin: "0 0 0.25rem", fontSize: "1rem", fontWeight: 700 }}>Active Delegates</h3>
+          <p style={{ margin: "0 0 1.25rem", color: "#6b7280", fontSize: "0.875rem" }}>
+            Delegations currently in effect. Remove one when the manager is back.
+          </p>
+
+          {delegations.length === 0 ? (
+            <div style={{
+              textAlign: "center", padding: "3rem 1rem", color: "#9ca3af",
+              border: "2px dashed #e5e7eb", borderRadius: "8px",
+            }}>
+              <UserCheck size={36} style={{ marginBottom: "0.75rem", opacity: 0.4 }} aria-hidden="true" />
+              <p style={{ margin: 0, fontWeight: 500 }}>No active delegations</p>
+              <p style={{ margin: "0.25rem 0 0", fontSize: "0.85rem" }}>Assign a delegate using the form on the left.</p>
+            </div>
+          ) : (
+            <table className="ssg-data-table" style={{ minWidth: 0 }}>
               <thead>
                 <tr>
                   <th scope="col">Manager</th>
-                  <th scope="col">Delegate</th>
+                  <th scope="col">Acting Delegate</th>
                   <th scope="col"><span className="ssg-visually-hidden">Actions</span></th>
                 </tr>
               </thead>
               <tbody>
                 {delegations.map((d) => (
                   <tr key={d.manager_id}>
-                    <td>{d.manager_username}</td>
-                    <td>{d.delegate_username}</td>
+                    <td data-label="Manager">
+                      <strong>{d.manager_username}</strong>
+                      <span>Team Manager</span>
+                    </td>
+                    <td data-label="Acting Delegate">
+                      {d.delegate_username}
+                    </td>
                     <td className="ssg-table-actions">
                       <button
                         type="button"
@@ -197,8 +219,9 @@ export default function DelegateManager() {
                 ))}
               </tbody>
             </table>
-          </div>
-        )}
+          )}
+        </div>
+
       </div>
     </section>
   );
