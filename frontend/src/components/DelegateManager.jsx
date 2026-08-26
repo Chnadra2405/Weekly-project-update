@@ -1,31 +1,33 @@
-import { AlertCircle, CheckCircle, UserCheck } from "lucide-react";
+import { AlertCircle, CheckCircle, Trash2, UserCheck } from "lucide-react";
 import { useEffect, useState } from "react";
-import { assignDelegate, fetchUsers } from "../api";
+import { assignDelegate, fetchDelegations, fetchUsers, removeDelegate } from "../api";
 
 export default function DelegateManager() {
   const [managers, setManagers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [delegations, setDelegations] = useState([]);
   const [managerId, setManagerId] = useState("");
   const [delegateId, setDelegateId] = useState("");
   const [state, setState] = useState("idle");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const [mgrs, users] = await Promise.all([
-          fetchUsers("TEAM_MANAGER"),
-          fetchUsers(),
-        ]);
-        setManagers(mgrs);
-        setAllUsers(users);
-      } catch (err) {
-        setError(err.message);
-      }
+  async function load() {
+    try {
+      const [mgrs, users, dels] = await Promise.all([
+        fetchUsers("TEAM_MANAGER"),
+        fetchUsers(),
+        fetchDelegations(),
+      ]);
+      setManagers(mgrs);
+      setAllUsers(users);
+      setDelegations(dels);
+    } catch (err) {
+      setError(err.message);
     }
-    load();
-  }, []);
+  }
+
+  useEffect(() => { load(); }, []);
 
   async function handleAssign(e) {
     e.preventDefault();
@@ -41,10 +43,23 @@ export default function DelegateManager() {
       );
       setManagerId("");
       setDelegateId("");
+      await load();
     } catch (err) {
       setError(err.message);
     } finally {
       setState("idle");
+    }
+  }
+
+  async function handleRemove(mgrId, mgrUsername) {
+    setMessage("");
+    setError("");
+    try {
+      await removeDelegate(mgrId);
+      setMessage(`Delegate removed for ${mgrUsername}.`);
+      await load();
+    } catch (err) {
+      setError(err.message);
     }
   }
 
@@ -149,6 +164,41 @@ export default function DelegateManager() {
             </button>
           </div>
         </form>
+
+        {delegations.length > 0 && (
+          <div style={{ marginTop: "2rem" }}>
+            <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "0.75rem" }}>Active Delegates</h3>
+            <table className="ssg-data-table" style={{ width: "100%" }}>
+              <thead>
+                <tr>
+                  <th scope="col">Manager</th>
+                  <th scope="col">Delegate</th>
+                  <th scope="col"><span className="ssg-visually-hidden">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                {delegations.map((d) => (
+                  <tr key={d.manager_id}>
+                    <td>{d.manager_username}</td>
+                    <td>{d.delegate_username}</td>
+                    <td className="ssg-table-actions">
+                      <button
+                        type="button"
+                        className="ssg-icon-button"
+                        onClick={() => handleRemove(d.manager_id, d.manager_username)}
+                        aria-label={`Remove delegate for ${d.manager_username}`}
+                        title="Remove delegate"
+                        style={{ color: "#dc2626" }}
+                      >
+                        <Trash2 size={18} aria-hidden="true" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,10 +1,20 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { fetchMyDelegateStatus } from "../api";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  async function enrichWithDelegateStatus(user) {
+    try {
+      const status = await fetchMyDelegateStatus();
+      return { ...user, isDelegate: status.is_delegate };
+    } catch {
+      return { ...user, isDelegate: false };
+    }
+  }
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
@@ -15,19 +25,21 @@ export function AuthProvider({ children }) {
         role: localStorage.getItem("role"),
         token,
       };
-      setAuth(user);
+      enrichWithDelegateStatus(user).then(setAuth).finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
-  const login = (token_data) => {
+  const login = async (token_data) => {
     const user = {
       id: token_data.user_id,
       username: token_data.username,
       role: token_data.role,
       token: token_data.access_token,
     };
-    setAuth(user);
+    const enriched = await enrichWithDelegateStatus(user);
+    setAuth(enriched);
   };
 
   const logout = () => {

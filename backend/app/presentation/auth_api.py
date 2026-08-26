@@ -81,6 +81,25 @@ def create_auth_router(auth_service: AuthService, get_current_user) -> APIRouter
             for u in users
         ]
 
+    @router.get("/delegate/me")
+    def my_delegate_status(
+        current_user: dict = Depends(get_current_user),
+    ) -> dict:
+        user_id = UUID(current_user["sub"])
+        manager_id = auth_service.get_active_delegation_for_delegate(user_id)
+        return {"is_delegate": manager_id is not None, "manager_id": str(manager_id) if manager_id else None}
+
+    @router.get("/delegates")
+    def list_delegates(
+        current_user: dict = Depends(get_current_user),
+    ) -> list[dict]:
+        if current_user.get("role") != "APP_ADMIN":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Only Application Admin can list delegates.",
+            )
+        return auth_service.get_active_delegations()
+
     @router.post("/delegate", status_code=status.HTTP_200_OK)
     def assign_delegate(
         request: AssignDelegateRequest,
@@ -97,5 +116,20 @@ def create_auth_router(auth_service: AuthService, get_current_user) -> APIRouter
             created_by_id=UUID(current_user["sub"]),
         )
         return {"success": success}
+
+    @router.delete("/delegate/{manager_id}", status_code=status.HTTP_200_OK)
+    def remove_delegate(
+        manager_id: UUID,
+        current_user: dict = Depends(get_current_user),
+    ) -> dict:
+        if current_user.get("role") != "APP_ADMIN":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Only Application Admin can remove delegates.",
+            )
+        found = auth_service.remove_delegate(manager_id)
+        if not found:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No active delegation found for this manager.")
+        return {"success": True}
 
     return router

@@ -163,6 +163,47 @@ class AuthService:
             )
             return result
 
+    def get_active_delegations(self) -> list[dict]:
+        """Return all active delegations with manager and delegate usernames."""
+        with self.session_factory() as session:
+            rows = session.execute(
+                select(
+                    DelegationModel.manager_id,
+                    DelegationModel.delegate_id,
+                ).where(DelegationModel.is_active == True)  # noqa: E712
+            ).all()
+            if not rows:
+                return []
+            user_ids = {r.manager_id for r in rows} | {r.delegate_id for r in rows}
+            users = {
+                u.id: u.username
+                for u in session.scalars(select(UserModel).where(UserModel.id.in_(user_ids))).all()
+            }
+            return [
+                {
+                    "manager_id": str(r.manager_id),
+                    "manager_username": users.get(r.manager_id, ""),
+                    "delegate_id": str(r.delegate_id),
+                    "delegate_username": users.get(r.delegate_id, ""),
+                }
+                for r in rows
+            ]
+
+    def remove_delegate(self, manager_id: UUID) -> bool:
+        """Deactivate the active delegation for the given manager. Returns True if one was found."""
+        with self.session_factory() as session:
+            existing = session.scalar(
+                select(DelegationModel).where(
+                    (DelegationModel.manager_id == manager_id)
+                    & (DelegationModel.is_active == True)  # noqa: E712
+                )
+            )
+            if not existing:
+                return False
+            existing.is_active = False
+            session.commit()
+            return True
+
     def get_users(self, role: str | None = None) -> list[UserModel]:
         """Return all active users, optionally filtered by role."""
         with self.session_factory() as session:

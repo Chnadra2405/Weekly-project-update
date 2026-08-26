@@ -162,3 +162,25 @@ export async function fetchUsers(role) {
   });
   return parseResponse(response);
 }
+
+export async function fetchMyDelegateStatus() {
+  const response = await fetch(`${API_BASE_URL}/auth/delegate/me`, {
+    headers: getHeaders(),
+  });
+  return parseResponse(response);
+}
+
+export async function fetchDelegations() {
+  const response = await fetch(`${API_BASE_URL}/auth/delegates`, {
+    headers: getHeaders(),
+  });
+  return parseResponse(response);
+}
+
+export async function removeDelegate(managerId) {
+  const response = await fetch(`${API_BASE_URL}/auth/delegate/${encodeURIComponent(managerId)}`, {
+    method: "DELETE",
+    headers: getHeaders(),
+  });
+  return parseResponse(response);
+}

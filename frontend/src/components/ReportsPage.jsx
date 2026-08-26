@@ -239,9 +239,10 @@ export default function ReportsPage({ auth, filterTeam, onClearFilter, timeFilte
                   const canEdit = !approved && (
                     (auth?.role === "TEAM_LEAD" && report.user_id === auth.id) ||
                     auth?.role === "TEAM_MANAGER" ||
-                    auth?.role === "APP_ADMIN"
+                    auth?.role === "APP_ADMIN" ||
+                    auth?.isDelegate
                   );
-                  const canApprove = !approved && auth?.role === "TEAM_MANAGER";
+                  const canApprove = !approved && (auth?.role === "TEAM_MANAGER" || auth?.isDelegate);
                   return (
                     <tr key={report.id}>
                       <td data-label="Team" className="ssg-team-cell">{report.team_project}</td>
