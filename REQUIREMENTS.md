@@ -39,6 +39,7 @@ WPU is a web application for collecting and storing weekly project status update
 | RET-02 | An authenticated user must be able to retrieve a single project update by its ID, subject to role-based access rules. |
 | RET-03 | Report listings must support grouping by current month vs. older reports. |
 | RET-04 | Report list and detail responses must include the owning user's username alongside the report data. |
+| RET-05 | A `DU_HEAD` must only see reports with `approval_status` of `APPROVED` in the list, detail, and export endpoints. Draft reports must not be visible or exportable to a `DU_HEAD`. |
 
 ### Report Editing
 
@@ -64,8 +65,8 @@ WPU is a web application for collecting and storing weekly project status update
 
 | ID | Requirement |
 |----|-------------|
-| EXP-01 | A `DU_HEAD` must be able to export all reports as a Microsoft Excel workbook (`.xlsx`). The exported file must include columns for team/project, week start, week end, owner, approval status, achievements, initiatives, and next week's plan. Rich-text HTML must be stripped to plain text in the export. |
-| EXP-02 | A `DU_HEAD` must be able to export all reports as a Microsoft PowerPoint presentation (`.pptx`). Each report must be rendered on a separate slide showing the team/project name, date range, owner, approval status, and the three content fields. |
+| EXP-01 | A `DU_HEAD` must be able to export all approved reports as a Microsoft Excel workbook (`.xlsx`). The exported file must include columns for team/project, week start, week end, owner, approval status, achievements, initiatives, and next week's plan. Rich-text HTML must be stripped to plain text in the export. |
+| EXP-02 | A `DU_HEAD` must be able to export all approved reports as a Microsoft PowerPoint presentation (`.pptx`). Each report must be rendered on a separate slide showing the team/project name, date range, owner, approval status, and the three content fields. |
 
 ### Delegation
 
@@ -81,7 +82,7 @@ WPU is a web application for collecting and storing weekly project status update
 |------|-----------|------|------|---------|--------|
 | **TEAM_LEAD** | Own reports only | Own reports only (full visibility if active delegate) | Own unapproved reports only (delegate: any unapproved) | Only if active delegate | No |
 | **TEAM_MANAGER** | No | All reports | Any unapproved report | Yes | No |
-| **DU_HEAD** | No | All reports | No | No | Yes (Excel & PowerPoint) |
+| **DU_HEAD** | No | Approved reports only | No | No | Yes (Excel & PowerPoint, approved reports only) |
 | **APP_ADMIN** | Yes | All reports | Any report (including approved) | Yes | No |
 
 ---

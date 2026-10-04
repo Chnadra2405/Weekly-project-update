@@ -10,6 +10,10 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 
 - Add the monthly project update MVP with managed attachments, idempotent SMTP delivery, persisted status, and an accessible React form.
 
+### Changed
+
+- Restrict `DU_HEAD` visibility to reports with `approval_status` of `APPROVED` across the list, detail, and export (Excel/PowerPoint) endpoints.
+
 ### Fixed
 
 - Restore highlighted text in report display mode by allowing the `mark` tag and `style` attribute through DOMPurify sanitization.

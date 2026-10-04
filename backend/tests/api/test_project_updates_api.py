@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import io
+from dataclasses import replace
 from datetime import UTC, date, datetime
 from uuid import UUID, uuid4
 
+import openpyxl
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
@@ -258,6 +261,60 @@ def test_admin_list_is_unscoped() -> None:
 
     assert response.status_code == 200
     assert list_updates.user_ids is None
+
+
+def test_du_head_list_only_includes_approved_reports() -> None:
+    draft = project_update(uuid4())
+    approved = replace(project_update(uuid4()), approval_status="APPROVED")
+    list_updates = FakeList([draft, approved])
+
+    response = client_for(FakeSubmit(), role="DU_HEAD", list_updates=list_updates).get(
+        "/api/v1/project-updates"
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert len(body) == 1
+    assert body[0]["id"] == str(approved.id)
+
+
+def test_du_head_cannot_view_unapproved_report_detail() -> None:
+    draft = project_update(uuid4())
+
+    response = client_for(FakeSubmit(), role="DU_HEAD", get_update=FakeGet(draft)).get(
+        f"/api/v1/project-updates/{draft.id}"
+    )
+
+    assert response.status_code == 403
+    assert response.json()["detail"] == "Only approved reports are visible to DU Head."
+
+
+def test_du_head_can_view_approved_report_detail() -> None:
+    approved = replace(project_update(uuid4()), approval_status="APPROVED")
+
+    response = client_for(FakeSubmit(), role="DU_HEAD", get_update=FakeGet(approved)).get(
+        f"/api/v1/project-updates/{approved.id}"
+    )
+
+    assert response.status_code == 200
+    assert response.json()["id"] == str(approved.id)
+
+
+def test_du_head_excel_export_only_includes_approved_reports() -> None:
+    draft = project_update(uuid4())
+    approved = replace(project_update(uuid4()), approval_status="APPROVED")
+    list_updates = FakeList([draft, approved])
+
+    response = client_for(FakeSubmit(), role="DU_HEAD", list_updates=list_updates).get(
+        "/api/v1/project-updates/export/excel"
+    )
+
+    assert response.status_code == 200
+    workbook = openpyxl.load_workbook(io.BytesIO(response.content))
+    sheet = workbook.active
+    data_rows = list(sheet.iter_rows(min_row=2, values_only=True))
+    assert len(data_rows) == 1
+    assert data_rows[0][4] == "APPROVED"
 
 
 def test_owner_can_edit_report() -> None:

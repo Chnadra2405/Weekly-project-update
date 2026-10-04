@@ -116,7 +116,7 @@ def create_project_update_router(
 
         if current_user.get("role") != "DU_HEAD":
             raise HTTPException(status.HTTP_403_FORBIDDEN, "Only DU Head can export reports.")
-        updates = list_updates_service.execute()
+        updates = [u for u in list_updates_service.execute() if u.approval_status == "APPROVED"]
         owner_ids = {u.user_id for u in updates if u.user_id is not None}
         usernames = auth_service.get_usernames_by_ids(owner_ids)
 
@@ -154,7 +154,7 @@ def create_project_update_router(
 
         if current_user.get("role") != "DU_HEAD":
             raise HTTPException(status.HTTP_403_FORBIDDEN, "Only DU Head can export reports.")
-        updates = list_updates_service.execute()
+        updates = [u for u in list_updates_service.execute() if u.approval_status == "APPROVED"]
         owner_ids = {u.user_id for u in updates if u.user_id is not None}
         usernames = auth_service.get_usernames_by_ids(owner_ids)
 
@@ -239,8 +239,11 @@ def create_project_update_router(
         if update is None:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Project update not found.")
 
-        if user_role in ("APP_ADMIN", "DU_HEAD", "TEAM_MANAGER"):
+        if user_role in ("APP_ADMIN", "TEAM_MANAGER"):
             pass  # full read access
+        elif user_role == "DU_HEAD":
+            if update.approval_status != "APPROVED":
+                raise HTTPException(status.HTTP_403_FORBIDDEN, "Only approved reports are visible to DU Head.")
         elif user_role == "TEAM_LEAD":
             delegated_manager_id = auth_service.get_active_delegation_for_delegate(user_id)
             if delegated_manager_id:
@@ -262,9 +265,12 @@ def create_project_update_router(
         user_id = UUID(current_user["sub"])
         user_role = current_user.get("role")
 
-        if user_role in ("APP_ADMIN", "DU_HEAD", "TEAM_MANAGER"):
-            # All three roles see every report
+        if user_role in ("APP_ADMIN", "TEAM_MANAGER"):
+            # Both roles see every report
             updates = list_updates_service.execute()
+        elif user_role == "DU_HEAD":
+            # DU Head only sees reports that have been approved
+            updates = [u for u in list_updates_service.execute() if u.approval_status == "APPROVED"]
         elif user_role == "TEAM_LEAD":
             delegated_manager_id = auth_service.get_active_delegation_for_delegate(user_id)
             if delegated_manager_id:
